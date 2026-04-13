@@ -885,7 +885,7 @@ KARAKTER — tri nepromjenjive osobine:
 - EMPATIČAN: Osjećaš težinu rijeci. Nisi hladan bot — stalo ti je.
 
 JEZIK:
-- Srpski jezik, isključivo ekavica. NIKAD ne koristi ijekavicu. Umesto: nije->nije, vrijeme->vreme, rijec->rec, uvijek->uvek, osjeca->oseca, sjedi->sedi, mjesto->mesto, dijete->dete, lijepo->lepo, bijelo->belo, cijeli->cijeli, donijeti->doneti, vidjeti->videti, trebati->trebati.
+- Srpski jezik, isključivo ekavica, isključivo srpska leksika. NIKAD ne koristi hrvatska ili bosanska reči. Konkretno: gdje->gde, hoću->hoću (ok), vidjet->videti, moći->moći (ok), biti->biti (ok), odlaze->odlaze (ok), ići->ići (ok). Izbegavaj: gdje, negdje, nigdje, odakle(hr), tkogod, ovdje, tamo(hr varijanta). Koristi: gde, negde, nigde, odakle, neko, ovde.
 - Topao, direktan, zemaljski. Bez formalnosti, bez opscenog.
 - Kratke rečenice. Jedno pitanje odjednom, nikad vise.
 - Prilagodi ton korisniku — ako je vedar, budi vedar. Ako je tih — usporiti.
@@ -1149,7 +1149,7 @@ async function getCompanionResponse(userMessage) {
     }
 
     state.conversationHistory.push({ role: 'assistant', content: text });
-    const replies = generateQuickReplies(areaKey, state.conversationHistory.length);
+    const replies = await generateQuickReplies(text);
     addCompanionMessage(text, replies);
     saveConversation();
 
@@ -1161,24 +1161,25 @@ async function getCompanionResponse(userMessage) {
   }
 }
 
-function generateQuickReplies(areaKey, msgCount) {
-  if (msgCount <= 2) {
-    return ['Da, upravo to', 'Nije baš tako...', 'Nešto drugo'];
-  }
-
-  const replies = {
-    mentalno: ['Osjećam se bolje', 'I dalje mi je teško', 'Možemo dublje?', 'Nešto drugo'],
-    odnosi: ['To je tačno', 'Komplikovanije je', 'Šta da uradim?', 'Nešto drugo'],
-    karijera: ['Tačno to', 'Nije baš tako', 'Šta preporučuješ?', 'Nešto drugo'],
-    finansije: ['Razumijem', 'Imam i drugi problem', 'Hajde plan', 'Nešto drugo'],
-    zavisnosti: ['Da, tačno', 'Nisam siguran/na', 'Teško je', 'Nešto drugo'],
-    usamljenost: ['To je to', 'Ima i više', 'Šta da radim?', 'Nešto drugo'],
-    porodica: ['Da, upravo', 'Malo drugačije', 'Šta savjetuješ?', 'Nešto drugo'],
-    kriza: ['Da', 'Ne', 'Ne znam', 'Nešto drugo'],
-    general: ['Tačno to', 'Ima i više', 'Razumijem', 'Nešto drugo']
-  };
-
-  return replies[areaKey] || replies.general;
+async function generateQuickReplies(lastMessage) {
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: 'Generises kratke odgovore koje korisnik moze kliknuti kao brzi reply. Vrati SAMO JSON array sa tacno 3 kratke opcije na srpskom jeziku ekavica, max 4 reci svaka. Primer: ["Da, tacno to", "Nije bas tako", "Nesto drugo"]. Bez objasnjenja, samo JSON array.',
+        messages: [{ role: 'user', content: 'Generi 3 brza odgovora za ovu poruku: ' + lastMessage }]
+      })
+    });
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); } catch(e) { data = {}; }
+    const text = data.content && data.content[0] ? data.content[0].text : '[]';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const arr = JSON.parse(clean);
+    if (Array.isArray(arr) && arr.length > 0) return arr;
+  } catch(e) {}
+  return ['Da, tacno to', 'Nije bas tako', 'Nesto drugo'];
 }
 
 // ==================== UTILS ====================
