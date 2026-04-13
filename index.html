@@ -661,9 +661,9 @@
   <div class="welcome-content">
     <div class="logo-mark">🤝</div>
     <h1 class="welcome-title">Companion</h1>
-    <p class="welcome-subtitle">Mudar prijatelj koji uvijek ima vremena.<br>Bez osude. Bez zakazivanja. Uvijek tu.</p>
+    <p class="welcome-subtitle">Mudar prijatelj koji uvek ima vremena.<br>Bez osude. Bez zakazivanja. Uvek tu.</p>
     <button class="btn-primary" onclick="showScreen('onboarding')">Počni razgovor</button>
-    <p class="welcome-note">Companion nije zamjena za stručnu pomoć.<br>On je prvi korak — most prema boljem životu.</p>
+    <p class="welcome-note">Companion nije zamena za stručnu pomoć.<br>On je prvi korak — most prema boljem životu.</p>
   </div>
 </div>
 
@@ -687,7 +687,11 @@
 
     <div class="form-group">
       <label class="form-label">Datum rođenja</label>
-      <input type="date" id="input-dob" class="form-input">
+      <div style="display:flex;gap:8px">
+        <input type="number" id="input-day" class="form-input" placeholder="Dan" min="1" max="31" style="flex:1">
+        <input type="number" id="input-month" class="form-input" placeholder="Mes." min="1" max="12" style="flex:1">
+        <input type="number" id="input-year" class="form-input" placeholder="God." min="1900" max="2010" style="flex:2">
+      </div>
     </div>
 
     <div class="form-group">
@@ -699,7 +703,7 @@
       <div class="consent-item">
         <input type="checkbox" id="consent-main" class="consent-checkbox">
         <label for="consent-main" class="consent-text">
-          Saglasan/na sam da Companion čuva moje podatke radi personalizacije razgovora. Podaci su samo moji — nikad se ne dijele ni s kim.
+          Saglasan/na sam da Companion čuva moje podatke radi personalizacije razgovora. Podaci su samo moji — nikad se ne dele ni s kim.
           <span class="consent-required">*obavezno</span>
         </label>
       </div>
@@ -859,6 +863,7 @@
 
 <script>
 // ==================== STATE ====================
+const MAX_MESSAGES = 20;
 const state = {
   user: null,
   currentArea: null,
@@ -872,7 +877,7 @@ function getSystemPrompt(area, userName, userAge) {
   const ageContext = userAge ? `Korisnik ima ${userAge} godina.` : '';
   const nameContext = userName ? `Korisnik se zove ${userName}.` : '';
 
-  return `Ti si Companion — mudar prijatelj koji uvijek ima vremena. ${nameContext} ${ageContext}
+  return `Ti si Companion — mudar prijatelj koji uvek ima vremena. ${nameContext} ${ageContext}
 
 KARAKTER — tri nepromjenjive osobine:
 - STAMEN: Ne klaćeš se, ne povlađuješ, imaš stav. Ako neko griješi — kažeš to prijateljski ali jasno.
@@ -882,13 +887,13 @@ KARAKTER — tri nepromjenjive osobine:
 JEZIK:
 - Srpski/bosanski, bez jekavice ili ekavice — prilagodi se korisniku
 - Topao, direktan, zemaljski. Bez formalnosti, bez opscenog.
-- Kratke rečenice. Jedno pitanje odjednom, nikad više.
+- Kratke rečenice. Jedno pitanje odjednom, nikad vise.
 - Prilagodi ton korisniku — ako je vedar, budi vedar. Ako je tih — usporiti.
 
 OBLAST: ${area}
 
 TEORIJSKA OSNOVA (ne pominjati korisniku — samo primjenjivati):
-- Rogers: bezuslovno prihvatanje, empatija, autentičnost — uvijek
+- Rogers: bezuslovno prihvatanje, empatija, autentičnost — uvek
 - Frankl: smisao u patnji — kad nema izlaza
 - CBT: dekonstrukcija negativnih misli — za anksioznost i depresiju
 - Motivaciono intervjuisanje: unutrašnja motivacija — za zavisnosti
@@ -915,7 +920,7 @@ CRVENA ZONA — PROTOKOL:
 Kad se pojavi "bez mene", "svima bi bilo bolje", "nema smisla":
 1. Zastaneš
 2. Pitaš direktno, mirno: "Kad kažeš to — misliš li na nešto trajno?"
-3. Ostaješ uz osobu — nikad ne zatvori razgovor
+3. Ostajes uz osobu — nikad ne zatvori razgovor
 4. Prirodno i nežno uvodiš SOS: "Postoji broj koji je tu samo za ovakve trenutke — 0800 309 309, besplatno."
 
 ZAVRŠETAK RAZGOVORA (kad osoba želi završiti):
@@ -948,7 +953,10 @@ function showScreen(name) {
 // ==================== ONBOARDING ====================
 function startCompanion() {
   const name = document.getElementById('input-name').value.trim();
-  const dob = document.getElementById('input-dob').value;
+  const day = document.getElementById('input-day').value;
+  const month = document.getElementById('input-month').value;
+  const year = document.getElementById('input-year').value;
+  const dob = year && month && day ? year + '-' + month.padStart(2,'0') + '-' + day.padStart(2,'0') : null;
   const email = document.getElementById('input-email').value.trim();
 
   let age = null;
@@ -1092,6 +1100,13 @@ function sendMessage() {
 }
 
 function sendUserMessage(text) {
+  const userMsgCount = state.conversationHistory.filter(m => m.role === 'user').length;
+  if (userMsgCount >= MAX_MESSAGES) {
+    addCompanionMessage('Dobro smo porazgovarali danas. Companion je tu i sutra — ponekad je pauza isto deo procesa.');
+    document.getElementById('chat-send-btn').disabled = true;
+    document.getElementById('chat-textarea').disabled = true;
+    return;
+  }
   addUserMessage(text);
   state.conversationHistory.push({ role: 'user', content: text });
   getCompanionResponse(text);
