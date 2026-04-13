@@ -1111,7 +1111,7 @@ async function getCompanionResponse(userMessage) {
     const areaKey = state.currentArea?.key || 'general';
     const areaName = state.currentArea?.name || 'Razgovor';
 
-    const response = await fetch('/api/chat', {
+    const response = await fetch('/api/chat?v=' + Date.now(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
