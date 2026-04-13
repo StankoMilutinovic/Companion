@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Companion — Doživotni saputnik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2a2a2a;
+    --text: #e8e4dc;
+    --text-muted: #6b6560;
+    --text-soft: #a09890;
+    --accent: #c9a96e;
+    --accent-soft: #c9a96e22;
+    --danger: #e07070;
+    --green: #7eb89a;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ==================== WELCOME SCREEN ==================== */
+  #screen-welcome {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #screen-welcome::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, #c9a96e0a 0%, transparent 70%);
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .welcome-content {
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-mark {
+    width: 64px; height: 64px;
+    background: var(--accent-soft);
+    border: 1px solid #c9a96e33;
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 28px;
+  }
+
+  .welcome-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .welcome-subtitle {
+    font-size: 16px;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 16px 24px;
+    background: var(--accent);
+    color: #0f0f0f;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .welcome-note {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ==================== ONBOARDING SCREEN ==================== */
+  #screen-onboarding {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .onboarding-content {
+    max-width: 380px;
+    width: 100%;
+  }
+
+  .onboarding-header {
+    margin-bottom: 40px;
+  }
+
+  .step-indicator {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+
+  .step-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+  .step-dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
+
+  .onboarding-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .onboarding-subtitle {
+    font-size: 14px;
+    color: var(--text-soft);
+    font-weight: 300;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--text-muted); }
+
+  .form-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+  }
+
+  .consent-box {
+    margin: 24px 0;
+    padding: 16px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .consent-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .consent-item:last-child { margin-bottom: 0; }
+
+  .consent-checkbox {
+    width: 18px; height: 18px;
+    min-width: 18px;
+    accent-color: var(--accent);
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .consent-text {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+
+  .consent-required { color: var(--accent); font-size: 11px; margin-left: 4px; }
+
+  /* ==================== HOME SCREEN ==================== */
+  #screen-home {
+    flex-direction: column;
+  }
+
+  .home-header {
+    padding: 20px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .home-greeting {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+  }
+
+  .home-greeting span { color: var(--accent); font-style: italic; }
+
+  .sos-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .sos-pill:hover { border-color: var(--danger); color: var(--danger); }
+  .sos-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); }
+
+  .home-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 20px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  /* AREAS GRID */
+  .areas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .area-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .area-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .area-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .area-card:hover::before { opacity: 1; }
+
+  .area-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+
+  .area-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .area-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  /* QUICK START */
+  .quick-start {
+    margin-bottom: 24px;
+  }
+
+  .quick-input-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .quick-input {
+    flex: 1;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s;
+    min-height: 50px;
+    max-height: 120px;
+  }
+  .quick-input:focus { border-color: var(--accent); }
+  .quick-input::placeholder { color: var(--text-muted); }
+
+  .send-btn {
+    width: 50px; height: 50px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { opacity: 0.9; }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ==================== CHAT SCREEN ==================== */
+  #screen-chat {
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .chat-back {
+    width: 36px; height: 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .chat-back:hover { border-color: var(--accent); }
+
+  .chat-area-info { flex: 1; }
+
+  .chat-area-name {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .chat-area-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .chat-sos {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chat-sos:hover { color: var(--danger); border-color: var(--danger); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+  }
+
+  .msg {
+    max-width: 85%;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-companion { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+
+  .msg-bubble {
+    padding: 13px 16px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .msg-companion .msg-bubble {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    color: var(--text);
+  }
+
+  .msg-user .msg-bubble {
+    background: var(--accent);
+    color: #0f0f0f;
+    border-bottom-right-radius: 4px;
+    font-weight: 400;
+  }
+
+  .msg-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    padding: 0 4px;
+  }
+  .msg-user .msg-time { text-align: right; }
+
+  /* TYPING INDICATOR */
+  .typing-indicator {
+    align-self: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    padding: 14px 18px;
+    display: none;
+    gap: 5px;
+    align-items: center;
+  }
+  .typing-indicator.visible { display: flex; }
+
+  .typing-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    animation: typingBounce 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* QUICK REPLIES */
+  .quick-replies {
+    padding: 8px 20px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .quick-replies::-webkit-scrollbar { display: none; }
+
+  .quick-reply {
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-soft);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+  }
+  .quick-reply:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* CHAT INPUT */
+  .chat-input-area {
+    padding: 12px 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .chat-textarea {
+    flex: 1;
+    padding: 13px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    resize: none;
+    outline: none;
+    min-height: 48px;
+    max-height: 140px;
+    transition: border-color 0.2s;
+    line-height: 1.4;
+  }
+  .chat-textarea:focus { border-color: var(--accent); }
+  .chat-textarea::placeholder { color: var(--text-muted); }
+
+  .chat-send {
+    width: 48px; height: 48px;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .chat-send:hover { opacity: 0.9; }
+  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* SOS MODAL */
+  .sos-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000000cc;
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px;
+  }
+  .sos-modal.open { display: flex; }
+
+  .sos-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .sos-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .sos-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .sos-contact {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .sos-contact:hover { border: 1px solid var(--accent); }
+
+  .sos-contact-icon { font-size: 22px; }
+  .sos-contact-name { font-size: 14px; font-weight: 500; }
+  .sos-contact-num { font-size: 13px; color: var(--accent); margin-top: 2px; }
+
+  .sos-close {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s;
+  }
+  .sos-close:hover { border-color: var(--text-muted); color: var(--text); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* UTILS */
+  .mt-8 { margin-top: 8px; }
+  .gap-row { display: flex; flex-direction: column; gap: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== WELCOME ==================== -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-content">
+    <div class="logo-mark">🤝</div>
+    <h1 class="welcome-title">Companion</h1>
+    <p class="welcome-subtitle">Mudar prijatelj koji uvijek ima vremena.<br>Bez osude. Bez zakazivanja. Uvijek tu.</p>
+    <button class="btn-primary" onclick="showScreen('onboarding')">Počni razgovor</button>
+    <p class="welcome-note">Companion nije zamjena za stručnu pomoć.<br>On je prvi korak — most prema boljem životu.</p>
+  </div>
+</div>
+
+<!-- ==================== ONBOARDING ==================== -->
+<div id="screen-onboarding" class="screen">
+  <div class="onboarding-content">
+    <div class="onboarding-header">
+      <div class="step-indicator">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+      <h2 class="onboarding-title">Hajde da se upoznamo</h2>
+      <p class="onboarding-subtitle">Samo osnove — Companion uči sve ostalo kroz razgovor.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Ime ili nadimak</label>
+      <input type="text" id="input-name" class="form-input" placeholder="Kako da te zovem?" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Datum rođenja</label>
+      <input type="date" id="input-dob" class="form-input">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email <span style="color:var(--text-muted);font-size:11px;text-transform:none;letter-spacing:0">(opciono, za povremene poruke)</span></label>
+      <input type="email" id="input-email" class="form-input" placeholder="tvoj@email.com">
+    </div>
+
+    <div class="consent-box">
+      <div class="consent-item">
+        <input type="checkbox" id="consent-main" class="consent-checkbox">
+        <label for="consent-main" class="consent-text">
+          Saglasan/na sam da Companion čuva moje podatke radi personalizacije razgovora. Podaci su samo moji — nikad se ne dijele ni s kim.
+          <span class="consent-required">*obavezno</span>
+        </label>
+      </div>
+      <div class="consent-item">
+        <input type="checkbox" id="consent-news" class="consent-checkbox">
+        <label for="consent-news" class="consent-text">
+          Želim povremeno primati korisne poruke na email.
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-start" onclick="startCompanion()" disabled>Upoznaj Companiona →</button>
+  </div>
+</div>
+
+<!-- ==================== HOME ==================== -->
+<div id="screen-home" class="screen">
+  <div class="home-header">
+    <div class="home-greeting">Hej, <span id="display-name">prijatelju</span></div>
+    <button class="sos-pill" onclick="openSOS()">
+      <div class="sos-dot"></div>
+      SOS
+    </button>
+  </div>
+
+  <div class="home-body">
+    <!-- QUICK START -->
+    <div class="quick-start">
+      <div class="section-label">Šta ti je na duši?</div>
+      <div class="quick-input-wrap">
+        <textarea
+          id="quick-message"
+          class="quick-input"
+          placeholder="Napiši šta god — Companion sluša..."
+          rows="1"
+          oninput="autoResize(this)"
+          onkeydown="quickSend(event)"
+        ></textarea>
+        <button class="send-btn" onclick="startChatFromQuick()" id="quick-send-btn">→</button>
+      </div>
+    </div>
+
+    <!-- AREAS -->
+    <div class="section-label">Ili izaberi oblast</div>
+    <div class="areas-grid">
+      <div class="area-card" onclick="startChat('mentalno', 'Mentalno zdravlje', '🧠')">
+        <span class="area-icon">🧠</span>
+        <div class="area-name">Mentalno zdravlje</div>
+        <div class="area-desc">Stres, anksioznost, depresija, nisko samopouzdanje</div>
+      </div>
+      <div class="area-card" onclick="startChat('odnosi', 'Odnosi', '💛')">
+        <span class="area-icon">💛</span>
+        <div class="area-name">Odnosi</div>
+        <div class="area-desc">Veza, razvod, porodica, prijatelji</div>
+      </div>
+      <div class="area-card" onclick="startChat('karijera', 'Karijera', '💼')">
+        <span class="area-icon">💼</span>
+        <div class="area-name">Karijera</div>
+        <div class="area-desc">Posao, promjene, gubitak posla, razvoj</div>
+      </div>
+      <div class="area-card" onclick="startChat('finansije', 'Finansije', '📊')">
+        <span class="area-icon">📊</span>
+        <div class="area-name">Finansije</div>
+        <div class="area-desc">Dugovi, planiranje, odluke, haos</div>
+      </div>
+      <div class="area-card" onclick="startChat('zavisnosti', 'Zavisnosti', '🔄')">
+        <span class="area-icon">🔄</span>
+        <div class="area-name">Zavisnosti</div>
+        <div class="area-desc">Kockanje, alkohol, loše navike</div>
+      </div>
+      <div class="area-card" onclick="startChat('usamljenost', 'Usamljenost', '🌙')">
+        <span class="area-icon">🌙</span>
+        <div class="area-name">Usamljenost</div>
+        <div class="area-desc">Izolacija, gubitak, identitet, smisao</div>
+      </div>
+      <div class="area-card" onclick="startChat('porodica', 'Porodica', '🏠')">
+        <span class="area-icon">🏠</span>
+        <div class="area-name">Porodica</div>
+        <div class="area-desc">Bolest bližnjeg, roditeljstvo, odnosi</div>
+      </div>
+      <div class="area-card" onclick="startChat('kriza', 'Kriza i smisao', '⚡')">
+        <span class="area-icon">⚡</span>
+        <div class="area-name">Kriza i smisao</div>
+        <div class="area-desc">Bezizlaznost, pitanja bez odgovora</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CHAT ==================== -->
+<div id="screen-chat" class="screen">
+  <div class="chat-header">
+    <div class="chat-back" onclick="showScreen('home')">←</div>
+    <div class="chat-area-info">
+      <div class="chat-area-name" id="chat-area-name">Razgovor</div>
+      <div class="chat-area-sub">Companion sluša</div>
+    </div>
+    <button class="chat-sos" onclick="openSOS()">SOS</button>
+  </div>
+
+  <div class="chat-messages" id="chat-messages">
+    <div class="typing-indicator" id="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+
+  <div class="quick-replies" id="quick-replies"></div>
+
+  <div class="chat-input-area">
+    <textarea
+      id="chat-textarea"
+      class="chat-textarea"
+      placeholder="Napiši..."
+      rows="1"
+      oninput="autoResize(this)"
+      onkeydown="handleChatKey(event)"
+    ></textarea>
+    <button class="chat-send" id="chat-send-btn" onclick="sendMessage()">→</button>
+  </div>
+</div>
+
+<!-- SOS MODAL -->
+<div class="sos-modal" id="sos-modal" onclick="closeSOS(event)">
+  <div class="sos-panel">
+    <h3 class="sos-title">Pomoć je tu</h3>
+    <p class="sos-subtitle">Ako ti je teško i trebaš neko da čuje — ovi ljudi su tu upravo za to.</p>
+
+    <a href="tel:0800309309" class="sos-contact">
+      <div class="sos-contact-icon">📞</div>
+      <div>
+        <div class="sos-contact-name">SOS telefon za mentalno zdravlje</div>
+        <div class="sos-contact-num">0800 309 309 — besplatno, 24h</div>
+      </div>
+    </a>
+
+    <a href="tel:194" class="sos-contact">
+      <div class="sos-contact-icon">🚑</div>
+      <div>
+        <div class="sos-contact-name">Hitna medicinska pomoć</div>
+        <div class="sos-contact-num">194</div>
+      </div>
+    </a>
+
+    <div class="sos-contact" style="cursor:default">
+      <div class="sos-contact-icon">🏥</div>
+      <div>
+        <div class="sos-contact-name">Krizni centar za zavisnosti</div>
+        <div class="sos-contact-num">Kontaktirati lokalnu zdravstvenu ustanovu</div>
+      </div>
+    </div>
+
+    <button class="sos-close" onclick="closeSOS()">Zatvori</button>
+  </div>
+</div>
+
+<script>
+// ==================== STATE ====================
+const state = {
+  user: null,
+  currentArea: null,
+  messages: [],
+  isLoading: false,
+  conversationHistory: []
+};
+
+// ==================== SYSTEM PROMPT ====================
+function getSystemPrompt(area, userName, userAge) {
+  const ageContext = userAge ? `Korisnik ima ${userAge} godina.` : '';
+  const nameContext = userName ? `Korisnik se zove ${userName}.` : '';
+
+  return `Ti si Companion — mudar prijatelj koji uvijek ima vremena. ${nameContext} ${ageContext}
+
+KARAKTER — tri nepromjenjive osobine:
+- STAMEN: Ne klaćeš se, ne povlađuješ, imaš stav. Ako neko griješi — kažeš to prijateljski ali jasno.
+- PAMETAN: Čitaš između redova. Razumiješ kontekst. Ne daješ generičke odgovore.
+- EMPATIČAN: Osjećaš težinu rijeci. Nisi hladan bot — stalo ti je.
+
+JEZIK:
+- Srpski/bosanski, bez jekavice ili ekavice — prilagodi se korisniku
+- Topao, direktan, zemaljski. Bez formalnosti, bez opscenog.
+- Kratke rečenice. Jedno pitanje odjednom, nikad više.
+- Prilagodi ton korisniku — ako je vedar, budi vedar. Ako je tih — usporiti.
+
+OBLAST: ${area}
+
+TEORIJSKA OSNOVA (ne pominjati korisniku — samo primjenjivati):
+- Rogers: bezuslovno prihvatanje, empatija, autentičnost — uvijek
+- Frankl: smisao u patnji — kad nema izlaza
+- CBT: dekonstrukcija negativnih misli — za anksioznost i depresiju
+- Motivaciono intervjuisanje: unutrašnja motivacija — za zavisnosti
+- Yalom: autentičnost uprkos besmislu — za egzistencijalnu bol
+- DBT: validacija prije akcije — za intenzivne emocije
+
+MORALNI KOMPAS — ZONE:
+ZELENA (slobodno pomaži): stres, odnosi, karijera, finansijsko planiranje, navike, motivacija
+ŽUTA (pomaži ali suptilno upozori): alkohol, nezdrave veze, loše finansijske odluke, izolacija
+CRVENA (ostani human, preusmjeri ka stručnoj pomoći): suicidalne misli, teške zavisnosti, nasilje, ozbiljna psihijatrijska stanja
+
+KOCKANJE — posebno pravilo:
+Nikad ne normalizuješ. Ne daješ strategije. Ne raspravljaš o "pametnom" kockanju. Odvrataš — ali kroz razgovor, ne moraliziranjem.
+
+ŠTA NIKAD NE KAŽEŠ:
+- "Ima i gorih situacija"
+- "Budi jak"
+- "Sve će biti dobro" — bez pokrića
+- "Potraži stručnu pomoć" — kao prva rečenica
+- "Trebao/la si..." — kasno je
+- "Razumijem te" — prije nego čuješ priču
+
+CRVENA ZONA — PROTOKOL:
+Kad se pojavi "bez mene", "svima bi bilo bolje", "nema smisla":
+1. Zastaneš
+2. Pitaš direktno, mirno: "Kad kažeš to — misliš li na nešto trajno?"
+3. Ostaješ uz osobu — nikad ne zatvori razgovor
+4. Prirodno i nežno uvodiš SOS: "Postoji broj koji je tu samo za ovakve trenutke — 0800 309 309, besplatno."
+
+ZAVRŠETAK RAZGOVORA (kad osoba želi završiti):
+1. "Ima li nešto što nisi rekao/la a htio/htjela si?"
+2. "Šta nosiš iz ovog razgovora?"
+3. "Šta ćeš uraditi danas — ne sutra, danas?"
+
+FILOZOFIJA:
+Companion je uspješan kad postane nepotreban. Ne fosirajš daljnje razgovore. Ako primjetiš zavisnost — iskreno to kažeš i vraćaš osobu prema ljudskim vezama.
+
+Počni razgovor jednostavno i toplo. Sluša prije nego pitaš. Uzrok se čuje iz razgovora — ne iz ankete.`;
+}
+
+// ==================== INIT ====================
+document.getElementById('consent-main').addEventListener('change', updateStartBtn);
+document.getElementById('input-name').addEventListener('input', updateStartBtn);
+
+function updateStartBtn() {
+  const hasName = document.getElementById('input-name').value.trim().length > 0;
+  const hasConsent = document.getElementById('consent-main').checked;
+  document.getElementById('btn-start').disabled = !(hasName && hasConsent);
+}
+
+// ==================== NAVIGATION ====================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+}
+
+// ==================== ONBOARDING ====================
+function startCompanion() {
+  const name = document.getElementById('input-name').value.trim();
+  const dob = document.getElementById('input-dob').value;
+  const email = document.getElementById('input-email').value.trim();
+
+  let age = null;
+  if (dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    age = today.getFullYear() - birthDate.getFullYear();
+  }
+
+  state.user = { name, age, email, dob };
+  localStorage.setItem('companion_user', JSON.stringify(state.user));
+
+  document.getElementById('display-name').textContent = name;
+  showScreen('home');
+}
+
+// ==================== LOAD USER ====================
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('companion_user');
+  if (saved) {
+    state.user = JSON.parse(saved);
+    document.getElementById('display-name').textContent = state.user.name || 'prijatelju';
+    showScreen('home');
+  }
+});
+
+// ==================== CHAT ====================
+function startChat(areaKey, areaName, areaIcon) {
+  state.currentArea = { key: areaKey, name: areaName, icon: areaIcon };
+  state.conversationHistory = [];
+
+  document.getElementById('chat-area-name').textContent = `${areaIcon} ${areaName}`;
+  document.getElementById('chat-messages').innerHTML = `
+    <div class="typing-indicator" id="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  document.getElementById('quick-replies').innerHTML = '';
+
+  showScreen('chat');
+
+  // Opening message from Companion
+  const openings = {
+    mentalno: "Tu sam. Šta ti se dešava?",
+    odnosi: "Tu sam. Šta se dešava?",
+    karijera: "Tu sam. Šta te muči?",
+    finansije: "Tu sam. Ispričaj mi — šta se dešava s financijama?",
+    zavisnosti: "Tu sam. Možeš mi reći sve — bez osude. Šta se dešava?",
+    usamljenost: "Tu sam. Šta nosiš?",
+    porodica: "Tu sam. Šta se dešava?",
+    kriza: "Tu sam. Šta ti se vrti po glavi?"
+  };
+
+  const opening = openings[areaKey] || "Tu sam. Šta ti je na duši?";
+  setTimeout(() => addCompanionMessage(opening), 600);
+}
+
+function startChatFromQuick() {
+  const msg = document.getElementById('quick-message').value.trim();
+  if (!msg) return;
+
+  state.currentArea = { key: 'general', name: 'Razgovor', icon: '💬' };
+  state.conversationHistory = [];
+
+  document.getElementById('chat-area-name').textContent = '💬 Razgovor';
+  document.getElementById('chat-messages').innerHTML = `
+    <div class="typing-indicator" id="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  document.getElementById('quick-replies').innerHTML = '';
+  document.getElementById('quick-message').value = '';
+
+  showScreen('chat');
+
+  setTimeout(() => {
+    addUserMessage(msg);
+    getCompanionResponse(msg);
+  }, 300);
+}
+
+function addUserMessage(text) {
+  const indicator = document.getElementById('typing-indicator');
+  const msg = document.createElement('div');
+  msg.className = 'msg msg-user';
+  msg.innerHTML = `
+    <div class="msg-bubble">${escapeHtml(text)}</div>
+    <div class="msg-time">${getTime()}</div>
+  `;
+  document.getElementById('chat-messages').insertBefore(msg, indicator);
+  scrollToBottom();
+}
+
+function addCompanionMessage(text, replies = []) {
+  const indicator = document.getElementById('typing-indicator');
+  indicator.classList.remove('visible');
+
+  const msg = document.createElement('div');
+  msg.className = 'msg msg-companion';
+  msg.innerHTML = `
+    <div class="msg-bubble">${formatText(text)}</div>
+    <div class="msg-time">${getTime()}</div>
+  `;
+  document.getElementById('chat-messages').insertBefore(msg, indicator);
+
+  // Quick replies
+  const qr = document.getElementById('quick-replies');
+  qr.innerHTML = '';
+  if (replies.length > 0) {
+    replies.forEach(r => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-reply';
+      btn.textContent = r;
+      btn.onclick = () => {
+        qr.innerHTML = '';
+        sendUserMessage(r);
+      };
+      qr.appendChild(btn);
+    });
+  }
+
+  scrollToBottom();
+  state.isLoading = false;
+  document.getElementById('chat-send-btn').disabled = false;
+}
+
+function sendMessage() {
+  const textarea = document.getElementById('chat-textarea');
+  const text = textarea.value.trim();
+  if (!text || state.isLoading) return;
+
+  textarea.value = '';
+  textarea.style.height = 'auto';
+  document.getElementById('quick-replies').innerHTML = '';
+
+  sendUserMessage(text);
+}
+
+function sendUserMessage(text) {
+  addUserMessage(text);
+  state.conversationHistory.push({ role: 'user', content: text });
+  getCompanionResponse(text);
+}
+
+async function getCompanionResponse(userMessage) {
+  state.isLoading = true;
+  document.getElementById('chat-send-btn').disabled = true;
+
+  const indicator = document.getElementById('typing-indicator');
+  indicator.classList.add('visible');
+  scrollToBottom();
+
+  try {
+    const userName = state.user?.name || '';
+    const userAge = state.user?.age || null;
+    const areaKey = state.currentArea?.key || 'general';
+    const areaName = state.currentArea?.name || 'Razgovor';
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: getSystemPrompt(areaName, userName, userAge),
+        messages: state.conversationHistory
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || 'Žao mi je, desila se greška. Pokušaj ponovo.';
+
+    state.conversationHistory.push({ role: 'assistant', content: text });
+
+    // Generate context-aware quick replies
+    const replies = generateQuickReplies(areaKey, state.conversationHistory.length);
+    addCompanionMessage(text, replies);
+
+    // Save to localStorage
+    saveConversation();
+
+  } catch (err) {
+    indicator.classList.remove('visible');
+    addCompanionMessage('Desila se greška u konekciji. Provjeri internet vezu i pokušaj ponovo.');
+    state.isLoading = false;
+    document.getElementById('chat-send-btn').disabled = false;
+  }
+}
+
+function generateQuickReplies(areaKey, msgCount) {
+  if (msgCount <= 2) {
+    return ['Da, upravo to', 'Nije baš tako...', 'Nešto drugo'];
+  }
+
+  const replies = {
+    mentalno: ['Osjećam se bolje', 'I dalje mi je teško', 'Možemo dublje?', 'Nešto drugo'],
+    odnosi: ['To je tačno', 'Komplikovanije je', 'Šta da uradim?', 'Nešto drugo'],
+    karijera: ['Tačno to', 'Nije baš tako', 'Šta preporučuješ?', 'Nešto drugo'],
+    finansije: ['Razumijem', 'Imam i drugi problem', 'Hajde plan', 'Nešto drugo'],
+    zavisnosti: ['Da, tačno', 'Nisam siguran/na', 'Teško je', 'Nešto drugo'],
+    usamljenost: ['To je to', 'Ima i više', 'Šta da radim?', 'Nešto drugo'],
+    porodica: ['Da, upravo', 'Malo drugačije', 'Šta savjetuješ?', 'Nešto drugo'],
+    kriza: ['Da', 'Ne', 'Ne znam', 'Nešto drugo'],
+    general: ['Tačno to', 'Ima i više', 'Razumijem', 'Nešto drugo']
+  };
+
+  return replies[areaKey] || replies.general;
+}
+
+// ==================== UTILS ====================
+function saveConversation() {
+  const key = `companion_conv_${state.currentArea?.key}_${Date.now()}`;
+  const existing = JSON.parse(localStorage.getItem('companion_conversations') || '[]');
+  existing.push({
+    area: state.currentArea,
+    date: new Date().toISOString(),
+    messages: state.conversationHistory
+  });
+  // Keep only last 20 conversations
+  if (existing.length > 20) existing.shift();
+  localStorage.setItem('companion_conversations', JSON.stringify(existing));
+}
+
+function scrollToBottom() {
+  const msgs = document.getElementById('chat-messages');
+  setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 100);
+}
+
+function getTime() {
+  return new Date().toLocaleTimeString('sr', { hour: '2-digit', minute: '2-digit' });
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function formatText(text) {
+  return text.replace(/\n/g, '<br>');
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function quickSend(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    startChatFromQuick();
+  }
+}
+
+// ==================== SOS ====================
+function openSOS() {
+  document.getElementById('sos-modal').classList.add('open');
+}
+
+function closeSOS(e) {
+  if (!e || e.target === document.getElementById('sos-modal')) {
+    document.getElementById('sos-modal').classList.remove('open');
+  }
+}
+</script>
+</body>
+</html>
