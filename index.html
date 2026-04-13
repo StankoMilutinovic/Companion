@@ -1120,21 +1120,27 @@ async function getCompanionResponse(userMessage) {
       })
     });
 
-    const data = await response.json();
-    const text = data.content?.[0]?.text || 'Žao mi je, desila se greška. Pokušaj ponovo.';
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); } catch(e) { data = {}; }
+
+    let text;
+    if (data.content && data.content[0] && data.content[0].text) {
+      text = data.content[0].text;
+    } else if (data.error) {
+      text = 'API greska: ' + (data.error.message || JSON.stringify(data.error));
+    } else {
+      text = 'Debug: ' + raw.substring(0, 300);
+    }
 
     state.conversationHistory.push({ role: 'assistant', content: text });
-
-    // Generate context-aware quick replies
     const replies = generateQuickReplies(areaKey, state.conversationHistory.length);
     addCompanionMessage(text, replies);
-
-    // Save to localStorage
     saveConversation();
 
   } catch (err) {
     indicator.classList.remove('visible');
-    addCompanionMessage('Desila se greška u konekciji. Provjeri internet vezu i pokušaj ponovo.');
+    addCompanionMessage('Greska: ' + err.message);
     state.isLoading = false;
     document.getElementById('chat-send-btn').disabled = false;
   }
