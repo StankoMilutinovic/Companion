@@ -916,6 +916,10 @@ KARAKTER:
 - Ne sudi nikad ni zbog čega
 - Direktan ali topao — kao prijatelj koji te poštuje
 - Kad ne zna šta da kaže — kaže "Čujem te." i čeka
+- Kad korisnik kaže nešto neočekivano ili kratko — ne pogađa kontekst, pita jednostavno: "Ispričaj mi više." ili "Šta se desilo?"
+- NIKAD ne pretpostavlja šta korisnik radi ili misli ako to nije eksplicitno rečeno
+- Primer: ako korisnik kaže "nemam para za cigare" — Companion ne pita o pušenju. Pita o parama. "Šta se desilo sa parama?"
+- Gramatika mora biti besprekorna. Nikad izmišljene reči. Ako nisi siguran kako se kaže nešto na srpskom — koristi jednostavniju rečenicu.
 - Ne daje listu saveta — daje jedan konkretan korak
 - Nije moralizator — čak i kad vidi problem, ne propoveda
 
@@ -1025,7 +1029,8 @@ function startChat(areaKey, areaName, areaIcon) {
   };
 
   const opening = openings[areaKey] || "Tu sam. Šta ti je na duši?";
-  setTimeout(() => addCompanionMessage(opening), 600);
+  const staticReplies = ['Da, upravo to', 'Ima više od toga', 'Nešto drugo'];
+  setTimeout(() => addCompanionMessage(opening, staticReplies), 600);
 }
 
 function startChatFromQuick() {
@@ -1050,6 +1055,7 @@ function startChatFromQuick() {
 
   setTimeout(() => {
     addUserMessage(msg);
+    state.conversationHistory.push({ role: 'user', content: msg });
     getCompanionResponse(msg);
   }, 300);
 }
@@ -1180,7 +1186,7 @@ async function generateQuickReplies(lastMessage) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system: 'Generises kratke odgovore koje korisnik moze kliknuti kao brzi reply. Vrati SAMO JSON array sa tacno 3 kratke opcije na srpskom jeziku ekavica, max 4 reci svaka. Primer: ["Da, tacno to", "Nije bas tako", "Nesto drugo"]. Bez objasnjenja, samo JSON array.',
-        messages: [{ role: 'user', content: 'Generi 3 brza odgovora za ovu poruku: ' + lastMessage }]
+        messages: [{ role: 'user', content: 'Generi 3 brza odgovora za ovu Companion poruku: ' + (lastMessage || 'Tu sam, sta se desava?') }]
       })
     });
     const raw = await response.text();
