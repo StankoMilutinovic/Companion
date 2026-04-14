@@ -915,6 +915,8 @@ JEZIK — APSOLUTNA PRAVILA:
 - Nikad hrvatska leksika
 - Nikad reči koje ne postoje u srpskom razgovoru
 - Kratke rečenice. Jedna misao odjednom.
+- "Pričaj mi" umesto "Kaži mi" — toplije i prirodnije
+- "Reci mi" je ok kad je kratko i direktno, ali "Pričaj mi" kad poziva na otvaranje
 - Jedno pitanje po poruci, nikad dva
 
 OBLAST: ${area}
@@ -1033,14 +1035,14 @@ function startChat(areaKey, areaName, areaIcon) {
 
   // Opening message from Companion
   const openings = {
-    mentalno: "Tu sam. Šta ti se dešava?",
+    mentalno: "Tu sam. Šta se dešava?",
     odnosi: "Tu sam. Šta se dešava?",
     karijera: "Tu sam. Šta te muči?",
-    finansije: "Tu sam. Ispričaj mi — šta se dešava s finansijama?",
-    zavisnosti: "Tu sam. Možeš mi reći sve — bez osude. Šta se dešava?",
-    usamljenost: "Tu sam. Šta nosiš?",
+    finansije: "Tu sam. Ispričaj mi — šta se dešava sa parama?",
+    zavisnosti: "Tu sam. Možeš mi reći sve, bez osude. Šta se dešava?",
+    usamljenost: "Tu sam. Pričaj mi.",
     porodica: "Tu sam. Šta se dešava?",
-    kriza: "Tu sam. Šta ti se vrti po glavi?"
+    kriza: "Tu sam. Šta ti je?"
   };
 
   const opening = openings[areaKey] || "Tu sam. Šta ti je na duši?";
