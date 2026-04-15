@@ -977,7 +977,7 @@
       </div>
     </div>
     <button class="btn-primary" onclick="showScreen('onboarding')">Počni razgovor →</button>
-    <p class="welcome-note">Companion nije zamena za stručnu pomoć.<br>On je prvi korak — most prema boljem životu.</p>
+    <p class="welcome-note">Companion nije zamena za stručnu pomoć.<br>On je prvi korak — most prema pravoj podršci.</p>
   </div>
 </div>
 
@@ -1045,7 +1045,7 @@
       <button onclick="toggleTheme()" style="width:34px;height:34px;background:var(--surface);border:1px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all 0.2s" id="theme-toggle" title="Promeni temu">🌙</button>
       <button class="sos-pill" onclick="openSOS()">
         <div class="sos-dot"></div>
-        SOS
+        Linije pomoći
       </button>
     </div>
   </div>
@@ -1170,7 +1170,7 @@
       </div>
       <div style="font-size:11px;color:var(--text-muted);font-family:Inter,sans-serif;line-height:1.6;opacity:0.7">
         Companion nije zamena za stručnu psihološku ili medicinsku pomoć.<br>
-        SOS telefon za mentalno zdravlje: <a href="tel:0800309309" style="color:var(--accent);text-decoration:none">0800 309 309</a> · besplatno · 24h
+        Linije pomoći: <a href="tel:0800309309" style="color:var(--accent);text-decoration:none">0800 309 309</a> (mentalno zdravlje) · <a href="tel:194" style="color:var(--accent);text-decoration:none">194</a> (hitna) · besplatno · 24h
       </div>
     </div>
   </div>
@@ -1212,7 +1212,7 @@
       <div class="chat-area-name" id="chat-area-name">Razgovor</div>
       <div class="chat-area-sub">Companion sluša</div>
     </div>
-    <button class="chat-sos" onclick="openSOS()">SOS</button>
+    <button class="chat-sos" onclick="openSOS()">Linije pomoći</button>
   </div>
   <div class="chat-progress">
     <div class="chat-progress-bar" id="chat-progress-bar" style="width:0%"></div>
@@ -1262,9 +1262,11 @@
 
 <!-- SOS MODAL -->
 <div class="sos-modal" id="sos-modal" onclick="closeSOS(event)">
-  <div class="sos-panel">
-    <h3 class="sos-title">Pomoć je tu</h3>
-    <p class="sos-sub">Ako ti je teško i trebaš nekoga — ovi ljudi su tu samo za to.</p>
+  <div class="sos-panel" style="max-height:85vh;overflow-y:auto">
+    <h3 class="sos-title">Linije pomoći</h3>
+    <p class="sos-sub">Ako ti je teško i treba ti neko — ovi ljudi su tu samo za to.</p>
+
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:Inter,sans-serif;font-weight:500">Hitna pomoć</div>
 
     <a href="tel:0800309309" class="sos-contact">
       <div class="sos-ci">📞</div>
@@ -1282,12 +1284,63 @@
       </div>
     </a>
 
-    <div class="sos-contact" style="cursor:default">
+    <a href="tel:0800100600" class="sos-contact">
       <div class="sos-ci">🏥</div>
       <div>
-        <div class="sos-cn">Krizni centar za zavisnosti</div>
-        <div class="sos-num">Kontaktirati lokalnu zdravstvenu ustanovu</div>
+        <div class="sos-cn">Nacionalni centar za prevenciju samoubistva</div>
+        <div class="sos-num">0800 100 600 — besplatno, 24h</div>
       </div>
+    </a>
+
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px;font-family:Inter,sans-serif;font-weight:500">Stručna podrška</div>
+
+    <div class="sos-contact" style="cursor:default">
+      <div class="sos-ci">🧠</div>
+      <div>
+        <div class="sos-cn">Institut za mentalno zdravlje Beograd</div>
+        <div class="sos-num">011 3307 500 · Palmotićeva 37</div>
+      </div>
+    </div>
+
+    <div class="sos-contact" style="cursor:default">
+      <div class="sos-ci">🎗️</div>
+      <div>
+        <div class="sos-cn">Centar za zavisnosti — Dom zdravlja</div>
+        <div class="sos-num">Kontaktiraj lokalni dom zdravlja</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px;font-family:Inter,sans-serif;font-weight:500">Razgovor sa terapeutom</div>
+
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;font-family:Inter,sans-serif;font-weight:300;line-height:1.5">
+      Licencirani terapeuti dostupni za online seansu. Zakaži odmah — od 20€.
+    </div>
+
+    <div class="sos-contact" onclick="bookTherapist('Ana Marković')" style="cursor:pointer;border-color:var(--border-light)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-light)'">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-family:Fraunces,serif;font-style:italic;color:var(--accent)">AM</div>
+      <div style="flex:1">
+        <div class="sos-cn">Ana Marković</div>
+        <div class="sos-num">Klinički psiholog · anksioznost, odnosi</div>
+      </div>
+      <div style="font-size:11px;color:var(--accent);font-family:Inter,sans-serif;font-weight:500;flex-shrink:0">Zakaži →</div>
+    </div>
+
+    <div class="sos-contact" onclick="bookTherapist('Nikola Jovanović')" style="cursor:pointer;border-color:var(--border-light)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-light)'">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-family:Fraunces,serif;font-style:italic;color:var(--accent)">NJ</div>
+      <div style="flex:1">
+        <div class="sos-cn">Nikola Jovanović</div>
+        <div class="sos-num">Psihoterapeut · zavisnosti, stres, karijera</div>
+      </div>
+      <div style="font-size:11px;color:var(--accent);font-family:Inter,sans-serif;font-weight:500;flex-shrink:0">Zakaži →</div>
+    </div>
+
+    <div class="sos-contact" onclick="bookTherapist('Jovana Petrović')" style="cursor:pointer;border-color:var(--border-light)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-light)'">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--accent-glow);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-family:Fraunces,serif;font-style:italic;color:var(--accent)">JP</div>
+      <div style="flex:1">
+        <div class="sos-cn">Jovana Petrović</div>
+        <div class="sos-num">Psihijatar · depresija, krize, porodica</div>
+      </div>
+      <div style="font-size:11px;color:var(--accent);font-family:Inter,sans-serif;font-weight:500;flex-shrink:0">Zakaži →</div>
     </div>
 
     <button class="sos-close" onclick="closeSOS()">Zatvori</button>
@@ -1418,7 +1471,10 @@ Rogers, Frankl, Beck, Miller, Yalom, Linehan, Epiktet, Marko Aurelije
 ZAVRŠETAK RAZGOVORA:
 1. "Ima li nešto što nisi rekao a hteo si?"
 2. "Šta si zaključio iz ovog razgovora?"
-3. "Šta ćeš konkretno da uradiš danas zbog toga?"`;
+3. "Šta ćeš konkretno da uradiš danas zbog toga?"
+
+ZAHVALJIVANJE — ZAUSTAVI NA PRVOM:
+Ako korisnik zahvaljuje, odgovori jednom ("Nema na čemu. Tu sam kad zatreba.") i zatvori krug. Ako ponovo zahvaljuje — samo: "Javi se." Nikad dva puta "Nema na čemu".`;
 }
 
 // ==================== INIT ====================
@@ -1520,7 +1576,8 @@ function updateHomeStats() {
 // Update chat progress bar
 function updateProgressBar() {
   const userMsgs = state.conversationHistory.filter(m => m.role === 'user').length;
-  const pct = Math.min((userMsgs / 20) * 100, 100);
+  const currentLimit = window.MAX_MESSAGES || MAX_MESSAGES;
+  const pct = Math.min((userMsgs / currentLimit) * 100, 100);
   const bar = document.getElementById('chat-progress-bar');
   if (bar) bar.style.width = pct + '%';
 
@@ -1695,7 +1752,7 @@ function sendMessage() {
 function sendUserMessage(text) {
   const userMsgCount = state.conversationHistory.filter(m => m.role === 'user').length;
   const currentLimit = window.MAX_MESSAGES || MAX_MESSAGES;
-  if (userMsgCount >= currentLimit) {
+  if (userMsgCount >= currentLimit - 1) {
     addCompanionMessage('Dobro smo porazgovarali danas. Ako hoćeš da nastavimo — tu sam.');
     setTimeout(() => {
       const msgs = document.getElementById('chat-messages');
@@ -1867,6 +1924,24 @@ function extendConversation() {
   input.focus();
 }
 
+// ==================== THERAPIST BOOKING ====================
+function bookTherapist(name) {
+  closeSOS();
+  setTimeout(() => {
+    const msg = document.getElementById('chat-textarea') || document.getElementById('quick-message');
+    if (msg) {
+      msg.value = 'Hteo bih da zakažem seansu sa ' + name;
+      msg.focus();
+    }
+    // Show coming soon alert for now
+    const panel = document.createElement('div');
+    panel.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:14px 20px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);z-index:200;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.3)';
+    panel.innerHTML = '<div style="font-weight:500;color:var(--accent);margin-bottom:4px">Uskoro dostupno</div><div style="color:var(--text-muted);font-size:12px">Zakazivanje sa ' + name + ' biće dostupno uskoro.</div>';
+    document.body.appendChild(panel);
+    setTimeout(() => panel.remove(), 3000);
+  }, 300);
+}
+
 // ==================== MODALS ====================
 function showTerms() {
   const el = document.getElementById('terms-modal');
@@ -1969,7 +2044,8 @@ function updateHomeStats() {
 
 function updateProgressBar() {
   const userMsgs = state.conversationHistory.filter(m => m.role === 'user').length;
-  const pct = Math.min((userMsgs / 20) * 100, 100);
+  const currentLimit = window.MAX_MESSAGES || MAX_MESSAGES;
+  const pct = Math.min((userMsgs / currentLimit) * 100, 100);
   const bar = document.getElementById('chat-progress-bar');
   if (bar) bar.style.width = pct + '%';
 }
