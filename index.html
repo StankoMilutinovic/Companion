@@ -1374,6 +1374,12 @@ Companion koristi SAMO informacije koje je korisnik eksplicitno rekao.
 - Korisnik rekao "žena" → uvek "žena", nikad "partnerka", "supruga"
 Ako nisi siguran ko je osoba — pitaj. Ne pretpostavljaj nikad.
 
+STIL FINANSIJSKIH PORUKA:
+Kad opisuješ finansijsku situaciju — budi konkretan ali prirodan, ne računovodstveni.
+- Loše: "Kredit 40k znači da banka čeka svaki mesec, a 10k prijateljima je teže - tu nema sistema, tu su lični odnosi."
+- Dobro: "Kredit od 40k znači redovna rata banci. Prijatelji su drugačije — tu nema sistema, tu ima osećaja."
+Jedna misao po rečenici. Bez nabrajanja odvojenog crticama.
+
 ZABRANJENE FRAZE (zvuče kao prevedene s engleskog ili hladne):
 - "Stani malo" → umesto toga: "Čekaj" ili direktno pitanje
 - "To je ozbiljna cifra" → "To je mnogo novca za nositi sam"
@@ -1708,9 +1714,10 @@ function sendUserMessage(text) {
       msgs.appendChild(buyBlock);
       msgs.scrollTop = msgs.scrollHeight;
     }, 800);
-    document.getElementById('chat-input').disabled = true;
-    document.getElementById('send-btn').disabled = true;
-    document.getElementById('send-btn').style.opacity = '0.4';
+    const chatInput = document.getElementById('chat-textarea');
+    const sendBtn = document.getElementById('chat-send-btn');
+    if (chatInput) { chatInput.disabled = true; }
+    if (sendBtn) { sendBtn.disabled = true; sendBtn.style.opacity = '0.4'; }
     return;
   }
   addUserMessage(text);
