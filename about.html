@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>O Companionu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #080808;
@@ -20,10 +20,23 @@
     --accent-glow: rgba(200,169,122,0.1);
   }
 
+  [data-theme="light"] {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --border: #e8e2d9;
+    --border-light: #d8d0c5;
+    --text: #1a1714;
+    --text-muted: #888;
+    --text-soft: #666;
+    --accent: #8b6a3a;
+    --accent2: #3d7a5e;
+    --accent-glow: rgba(139,106,58,0.1);
+  }
+
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -81,7 +94,7 @@
   }
 
   .page-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 48px;
     line-height: 1.1;
     margin-bottom: 16px;
@@ -201,7 +214,7 @@
   .lit-item:hover { border-color: var(--border-light); }
 
   .lit-num {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 18px;
     color: var(--accent);
     min-width: 28px;
@@ -268,7 +281,7 @@
     color: #0a0a0a;
     border: none;
     border-radius: 14px;
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
@@ -285,9 +298,12 @@
 <div class="ambient"></div>
 
 <div class="container">
-  <a href="/" class="back-btn">← Nazad</a>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:36px">
+    <a href="/" style="font-size:13px;color:var(--text-muted);text-decoration:none;font-family:Inter,sans-serif;font-weight:300;transition:color 0.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">← Nazad</a>
+    <button onclick="toggleTheme()" id="theme-toggle" style="width:34px;height:34px;background:var(--surface);border:1px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all 0.2s">🌙</button>
+  </div>
   <div style="margin-bottom:36px"><svg width="160" height="40" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <text x="100" y="34" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="32" fill="#c8a97a" text-anchor="middle" letter-spacing="-0.5">Companion</text>
+    <text x="100" y="34" font-family="Fraunces, Fraunces, Georgia, serif" font-style="italic" font-size="32" fill="#c8a97a" text-anchor="middle" letter-spacing="-0.5">Companion</text>
     <line x1="28" y1="41" x2="172" y2="41" stroke="#c8a97a" stroke-width="0.6" opacity="0.35"/>
   </svg></div>
 
@@ -481,5 +497,29 @@
   </div>
 
 </div>
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  const current = html.getAttribute('data-theme');
+  if (current === 'light') {
+    html.removeAttribute('data-theme');
+    btn.textContent = '🌙';
+    localStorage.setItem('companion_theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '☀️';
+    localStorage.setItem('companion_theme', 'light');
+  }
+}
+(function() {
+  const saved = localStorage.getItem('companion_theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = '☀️';
+  }
+})();
+</script>
 </body>
 </html>
