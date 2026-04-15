@@ -178,14 +178,15 @@
   }
 
   .wf-icon {
-    width: 32px; height: 32px;
+    width: 36px; height: 36px;
     background: var(--surface);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
     flex-shrink: 0;
   }
+
+  [data-theme="light"] .wf-icon { background: var(--surface2); }
 
   .btn-primary {
     width: 100%;
@@ -960,19 +961,27 @@
     <p class="welcome-tagline">Mudar prijatelj koji uvek ima vremena.<br>Bez osude. Bez zakazivanja.</p>
     <div class="welcome-features" style="text-align:left">
       <div class="wf-item">
-        <div class="wf-icon">🕐</div>
-        Tu si kad god ti treba — danju i noću
+        <div class="wf-icon" style="background:#101828;border-color:#1a1f2d">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7eb8d4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </div>
+        Tu sam kad god ti treba — danju i noću
       </div>
       <div class="wf-item">
-        <div class="wf-icon">🧠</div>
+        <div class="wf-icon" style="background:#3d1a28;border-color:#2d1a22">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4728a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+        </div>
         Zasnovan na klinički dokazanim pristupima
       </div>
       <div class="wf-item">
-        <div class="wf-icon">🔒</div>
+        <div class="wf-icon" style="background:#102030;border-color:#1a252d">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6aaddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
         Privatno — tvoji podaci ostaju tvoji
       </div>
       <div class="wf-item">
-        <div class="wf-icon">🤝</div>
+        <div class="wf-icon" style="background:#1a3530;border-color:#1a2d28">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5dcaa5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         Upućuje ka stručnjacima kad treba
       </div>
     </div>
