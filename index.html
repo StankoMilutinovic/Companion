@@ -596,8 +596,12 @@
     height: 100vh;
     height: 100dvh;
     background: var(--bg);
-    position: relative;
-    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
   }
 
   .chat-header {
@@ -1539,25 +1543,29 @@ function updateStartBtn() {
 
 // ==================== NAVIGATION ====================
 function showScreen(name) {
-  // Hide all screens explicitly
+  // Hide all screens
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.remove('active');
     s.style.display = 'none';
     s.style.visibility = 'hidden';
     s.style.pointerEvents = 'none';
   });
+  // Reset home scroll position immediately
+  const homeScroll = document.querySelector('.home-scroll');
+  if (homeScroll) homeScroll.scrollTop = 0;
   // Show target screen
   const target = document.getElementById('screen-' + name);
   target.style.display = 'flex';
   target.style.visibility = 'visible';
   target.style.pointerEvents = '';
   target.classList.add('active');
-  // Reset scroll
-  window.scrollTo(0, 0);
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-  const homeScroll = document.querySelector('.home-scroll');
-  if (homeScroll) homeScroll.scrollTop = 0;
+  // Force scroll to top after render
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    if (target) target.scrollTop = 0;
+  });
 }
 
 // ==================== ONBOARDING ====================
