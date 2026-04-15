@@ -61,7 +61,18 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  .screen { display: none; min-height: 100vh; min-height: 100dvh; }
+  .screen {
+    display: none !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    visibility: hidden;
+  }
+  .screen.active {
+    display: flex !important;
+    flex-direction: column;
+    visibility: visible;
+  }
+  body { overflow-x: hidden; }
   .screen.active { display: flex; flex-direction: column; }
 
   /* ===== AMBIENT BACKGROUND ===== */
@@ -449,6 +460,7 @@
     padding: 0 20px 24px;
     position: relative;
     z-index: 1;
+    overscroll-behavior: contain;
   }
 
   /* QUICK INPUT */
@@ -584,6 +596,8 @@
     height: 100vh;
     height: 100dvh;
     background: var(--bg);
+    position: relative;
+    z-index: 10;
   }
 
   .chat-header {
@@ -1525,14 +1539,25 @@ function updateStartBtn() {
 
 // ==================== NAVIGATION ====================
 function showScreen(name) {
+  // Hide all screens explicitly
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.remove('active');
     s.style.display = 'none';
+    s.style.visibility = 'hidden';
+    s.style.pointerEvents = 'none';
   });
-  const target = document.getElementById(`screen-${name}`);
-  target.style.display = '';
+  // Show target screen
+  const target = document.getElementById('screen-' + name);
+  target.style.display = 'flex';
+  target.style.visibility = 'visible';
+  target.style.pointerEvents = '';
   target.classList.add('active');
+  // Reset scroll
   window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  const homeScroll = document.querySelector('.home-scroll');
+  if (homeScroll) homeScroll.scrollTop = 0;
 }
 
 // ==================== ONBOARDING ====================
