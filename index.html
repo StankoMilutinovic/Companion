@@ -1525,8 +1525,14 @@ function updateStartBtn() {
 
 // ==================== NAVIGATION ====================
 function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(`screen-${name}`).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const target = document.getElementById(`screen-${name}`);
+  target.style.display = '';
+  target.classList.add('active');
+  window.scrollTo(0, 0);
 }
 
 // ==================== ONBOARDING ====================
