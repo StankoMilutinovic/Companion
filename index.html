@@ -2,8 +2,8 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Companion — Doživotni saputnik</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Companion</title>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N1C4Q4W9SB"></script>
 <script>
@@ -13,170 +13,256 @@
   gtag('config', 'G-N1C4Q4W9SB');
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
-    --surface2: #222222;
-    --border: #2a2a2a;
-    --text: #e8e4dc;
-    --text-muted: #6b6560;
-    --text-soft: #a09890;
-    --accent: #c9a96e;
-    --accent-soft: #c9a96e22;
-    --danger: #e07070;
-    --green: #7eb89a;
-    --radius: 16px;
-    --radius-sm: 10px;
+    --bg: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #1f1f1f;
+    --border-light: #2a2a2a;
+    --text: #f0ece4;
+    --text-muted: #555;
+    --text-soft: #888;
+    --accent: #c8a97a;
+    --accent2: #7eb89a;
+    --accent-glow: rgba(200,169,122,0.12);
+    --danger: #d97070;
+    --r: 18px;
+    --r-sm: 12px;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { -webkit-tap-highlight-color: transparent; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* SCREENS */
-  .screen { display: none; min-height: 100vh; }
+  .screen { display: none; min-height: 100vh; min-height: 100dvh; }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ==================== WELCOME SCREEN ==================== */
-  #screen-welcome {
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    position: relative;
+  /* ===== AMBIENT BACKGROUND ===== */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
     overflow: hidden;
   }
-
-  #screen-welcome::before {
+  .ambient::before {
     content: '';
     position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, #c9a96e0a 0%, transparent 70%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,169,122,0.06) 0%, transparent 70%);
     top: -100px; left: 50%;
     transform: translateX(-50%);
-    pointer-events: none;
+    animation: ambientPulse 8s ease-in-out infinite;
+  }
+  .ambient::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(126,184,154,0.04) 0%, transparent 70%);
+    bottom: 100px; right: -50px;
+    animation: ambientPulse 10s ease-in-out infinite reverse;
+  }
+  @keyframes ambientPulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
   }
 
-  .welcome-content {
-    max-width: 380px;
+  /* ===== WELCOME ===== */
+  #screen-welcome {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 28px;
+  }
+
+  .welcome-wrap {
+    max-width: 360px;
     width: 100%;
-    text-align: center;
     position: relative;
     z-index: 1;
+    animation: fadeSlideUp 0.8s ease both;
   }
 
-  .logo-mark {
-    width: 64px; height: 64px;
-    background: var(--accent-soft);
-    border: 1px solid #c9a96e33;
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .welcome-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-light);
     border-radius: 20px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 32px;
-    font-size: 28px;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .badge-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent2);
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
 
   .welcome-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 42px;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-    margin-bottom: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
     color: var(--text);
   }
 
-  .welcome-subtitle {
-    font-size: 16px;
-    color: var(--text-soft);
-    line-height: 1.6;
-    margin-bottom: 48px;
-    font-weight: 300;
+  .welcome-title em {
+    font-style: italic;
+    color: var(--accent);
   }
 
-  .btn-primary {
-    width: 100%;
-    padding: 16px 24px;
-    background: var(--accent);
-    color: #0f0f0f;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
+  .welcome-tagline {
     font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.2px;
+    color: var(--text-soft);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    margin-top: 12px;
   }
 
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-
-  .welcome-note {
-    margin-top: 20px;
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  /* ==================== ONBOARDING SCREEN ==================== */
-  #screen-onboarding {
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-  }
-
-  .onboarding-content {
-    max-width: 380px;
-    width: 100%;
-  }
-
-  .onboarding-header {
+  .welcome-features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     margin-bottom: 40px;
   }
 
-  .step-indicator {
+  .wf-item {
     display: flex;
-    gap: 6px;
-    margin-bottom: 32px;
-  }
-
-  .step-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.3s;
-  }
-  .step-dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
-
-  .onboarding-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    line-height: 1.2;
-    margin-bottom: 8px;
-  }
-
-  .onboarding-subtitle {
+    align-items: center;
+    gap: 12px;
     font-size: 14px;
     color: var(--text-soft);
     font-weight: 300;
   }
 
-  .form-group {
-    margin-bottom: 16px;
+  .wf-icon {
+    width: 32px; height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
   }
+
+  .btn-primary {
+    width: 100%;
+    padding: 17px 24px;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: var(--r);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,169,122,0.3); }
+  .btn-primary:hover::after { background: rgba(255,255,255,0.08); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .welcome-note {
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ===== ONBOARDING ===== */
+  #screen-onboarding {
+    align-items: center;
+    justify-content: center;
+    padding: 48px 28px;
+  }
+
+  .onboarding-wrap {
+    max-width: 360px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .ob-step {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 36px;
+  }
+
+  .ob-dot {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border-light);
+    transition: all 0.3s;
+    flex: 1;
+  }
+  .ob-dot.active { background: var(--accent); }
+
+  .ob-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .ob-sub {
+    font-size: 14px;
+    color: var(--text-soft);
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+
+  .form-group { margin-bottom: 14px; }
 
   .form-label {
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
     margin-bottom: 8px;
     font-weight: 500;
   }
@@ -185,28 +271,33 @@
     width: 100%;
     padding: 14px 16px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-sm);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     font-size: 15px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
+    -webkit-appearance: none;
   }
 
-  .form-input:focus { border-color: var(--accent); }
+  .form-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
   .form-input::placeholder { color: var(--text-muted); }
 
-  .form-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.5);
-    cursor: pointer;
+  .dob-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr;
+    gap: 8px;
   }
 
   .consent-box {
-    margin: 24px 0;
+    margin: 22px 0;
     padding: 16px;
     background: var(--surface);
-    border-radius: var(--radius-sm);
+    border-radius: var(--r-sm);
     border: 1px solid var(--border);
   }
 
@@ -218,7 +309,7 @@
   }
   .consent-item:last-child { margin-bottom: 0; }
 
-  .consent-checkbox {
+  .consent-check {
     width: 18px; height: 18px;
     min-width: 18px;
     accent-color: var(--accent);
@@ -230,113 +321,128 @@
     font-size: 13px;
     color: var(--text-soft);
     line-height: 1.5;
+    font-weight: 300;
   }
 
-  .consent-required { color: var(--accent); font-size: 11px; margin-left: 4px; }
+  .req { color: var(--accent); font-size: 10px; }
 
-  /* ==================== HOME SCREEN ==================== */
-  #screen-home {
-    flex-direction: column;
-  }
+  /* ===== HOME ===== */
+  #screen-home { overflow: hidden; }
 
   .home-header {
     padding: 20px 20px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
   }
 
-  .home-greeting {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
+  .home-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--accent);
   }
-
-  .home-greeting span { color: var(--accent); font-style: italic; }
 
   .sos-pill {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
+    padding: 7px 13px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s;
-    text-decoration: none;
+    letter-spacing: 0.5px;
+    font-weight: 500;
   }
   .sos-pill:hover { border-color: var(--danger); color: var(--danger); }
-  .sos-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); }
+  .sos-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--danger); animation: badgePulse 2s infinite; }
 
-  .home-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 20px;
-  }
-
-  .section-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-bottom: 14px;
-  }
-
-  /* AREAS GRID */
-  .areas-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-
-  .area-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
+  .home-hero {
+    padding: 28px 20px 20px;
     position: relative;
-    overflow: hidden;
+    z-index: 1;
   }
 
-  .area-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.2s;
+  .home-greeting {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    line-height: 1.15;
+    margin-bottom: 6px;
   }
 
-  .area-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .area-card:hover::before { opacity: 1; }
+  .home-greeting em { font-style: italic; color: var(--accent); }
 
-  .area-icon { font-size: 24px; margin-bottom: 10px; display: block; }
-
-  .area-name {
+  .home-sub {
     font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-    color: var(--text);
-  }
-
-  .area-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.4;
+    color: var(--text-soft);
     font-weight: 300;
   }
 
-  /* QUICK START */
-  .quick-start {
+  /* STATS */
+  .home-stats {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-card {
+    flex: 1;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border-light); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .home-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* QUICK INPUT */
+  .quick-wrap {
     margin-bottom: 24px;
   }
 
-  .quick-input-wrap {
+  .quick-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .quick-input-row {
     display: flex;
     gap: 10px;
     align-items: flex-end;
@@ -346,47 +452,125 @@
     flex: 1;
     padding: 14px 16px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     font-size: 14px;
     resize: none;
     outline: none;
-    transition: border-color 0.2s;
     min-height: 50px;
     max-height: 120px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.4;
   }
-  .quick-input:focus { border-color: var(--accent); }
+  .quick-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
   .quick-input::placeholder { color: var(--text-muted); }
 
   .send-btn {
     width: 50px; height: 50px;
     background: var(--accent);
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--r-sm);
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
     transition: all 0.2s;
     flex-shrink: 0;
+    color: #0a0a0a;
+    font-weight: 600;
   }
-  .send-btn:hover { opacity: 0.9; }
-  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .send-btn:hover { opacity: 0.9; transform: scale(1.03); }
+  .send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
-  /* ==================== CHAT SCREEN ==================== */
+  /* AREAS */
+  .areas-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .areas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .area-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .area-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-glow);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .area-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .area-card:hover::before { opacity: 1; }
+  .area-card:active { transform: translateY(0); }
+
+  .area-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .area-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .area-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== CHAT ===== */
   #screen-chat {
-    flex-direction: column;
     height: 100vh;
+    height: 100dvh;
   }
 
   .chat-header {
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--bg);
+    background: rgba(8,8,8,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -395,97 +579,101 @@
   .chat-back {
     width: 36px; height: 36px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 16px;
     transition: all 0.2s;
     flex-shrink: 0;
+    color: var(--text-soft);
   }
-  .chat-back:hover { border-color: var(--accent); }
+  .chat-back:hover { border-color: var(--accent); color: var(--accent); }
 
-  .chat-area-info { flex: 1; }
-
-  .chat-area-name {
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  .chat-area-sub {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
+  .chat-info { flex: 1; }
+  .chat-area-name { font-size: 15px; font-weight: 500; }
+  .chat-area-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
   .chat-sos {
     font-size: 11px;
     color: var(--text-muted);
-    padding: 6px 10px;
+    padding: 6px 11px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: 'Instrument Sans', sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 500;
   }
   .chat-sos:hover { color: var(--danger); border-color: var(--danger); }
 
-  .chat-messages {
+  .chat-progress {
+    height: 2px;
+    background: var(--border);
+  }
+
+  .chat-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+  }
+
+  .chat-msgs {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 20px 18px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     scroll-behavior: smooth;
   }
 
-  .msg {
-    max-width: 85%;
-    animation: fadeUp 0.3s ease;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  .msg { max-width: 88%; animation: msgIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
   .msg-companion { align-self: flex-start; }
   .msg-user { align-self: flex-end; }
 
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
   .msg-bubble {
-    padding: 13px 16px;
+    padding: 12px 16px;
     border-radius: 18px;
     font-size: 15px;
     line-height: 1.55;
+    font-weight: 300;
   }
 
   .msg-companion .msg-bubble {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-bottom-left-radius: 4px;
     color: var(--text);
   }
 
   .msg-user .msg-bubble {
     background: var(--accent);
-    color: #0f0f0f;
+    color: #0a0a0a;
     border-bottom-right-radius: 4px;
     font-weight: 400;
   }
 
   .msg-time {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
-    margin-top: 5px;
+    margin-top: 4px;
     padding: 0 4px;
   }
   .msg-user .msg-time { text-align: right; }
 
-  /* TYPING INDICATOR */
   .typing-indicator {
     align-self: flex-start;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 18px;
     border-bottom-left-radius: 4px;
     padding: 14px 18px;
@@ -496,7 +684,7 @@
   .typing-indicator.visible { display: flex; }
 
   .typing-dot {
-    width: 7px; height: 7px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--text-muted);
     animation: typingBounce 1.2s infinite;
@@ -505,15 +693,14 @@
   .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
   @keyframes typingBounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-5px); opacity: 1; }
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+    30% { transform: translateY(-6px); opacity: 1; }
   }
 
-  /* QUICK REPLIES */
   .quick-replies {
-    padding: 8px 20px;
+    padding: 8px 18px;
     display: flex;
-    gap: 8px;
+    gap: 7px;
     overflow-x: auto;
     scrollbar-width: none;
     flex-wrap: nowrap;
@@ -523,23 +710,26 @@
   .quick-reply {
     padding: 8px 14px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 20px;
     font-size: 13px;
     color: var(--text-soft);
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     flex-shrink: 0;
+    font-weight: 300;
   }
-  .quick-reply:hover { border-color: var(--accent); color: var(--accent); }
+  .quick-reply:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+  .quick-reply:active { transform: scale(0.97); }
 
-  /* CHAT INPUT */
   .chat-input-area {
-    padding: 12px 16px 20px;
+    padding: 10px 16px 20px;
     border-top: 1px solid var(--border);
-    background: var(--bg);
+    background: rgba(8,8,8,0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     gap: 10px;
     align-items: flex-end;
@@ -549,19 +739,23 @@
     flex: 1;
     padding: 13px 16px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 14px;
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     font-size: 15px;
     resize: none;
     outline: none;
     min-height: 48px;
     max-height: 140px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     line-height: 1.4;
+    font-weight: 300;
   }
-  .chat-textarea:focus { border-color: var(--accent); }
+  .chat-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
   .chat-textarea::placeholder { color: var(--text-muted); }
 
   .chat-send {
@@ -572,18 +766,81 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
+    font-weight: 600;
+    color: #0a0a0a;
     transition: all 0.2s;
     flex-shrink: 0;
   }
-  .chat-send:hover { opacity: 0.9; }
-  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .chat-send:hover { opacity: 0.9; transform: scale(1.03); }
+  .chat-send:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
-  /* SOS MODAL */
+  /* ===== MOOD CHECK ===== */
+  .mood-bar {
+    padding: 20px 18px;
+    background: linear-gradient(to top, var(--surface), transparent);
+    border-top: 1px solid var(--border);
+    display: none;
+    animation: fadeSlideUp 0.4s ease both;
+  }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--text-soft);
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  .mood-opts {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mood-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Instrument Sans', sans-serif;
+    color: var(--text-soft);
+    font-size: 12px;
+    font-weight: 300;
+  }
+  .mood-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .mood-btn.selected { border-color: var(--accent); background: var(--accent-glow); color: var(--accent); }
+  .mood-em { font-size: 24px; }
+
+  .mood-skip {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Instrument Sans', sans-serif;
+    width: 100%;
+    padding: 4px;
+    font-weight: 300;
+  }
+  .mood-skip:hover { color: var(--text-soft); }
+
+  /* ===== SOS MODAL ===== */
   .sos-modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: #000000cc;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 100;
     align-items: flex-end;
     justify-content: center;
@@ -593,30 +850,31 @@
 
   .sos-panel {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     border-radius: 24px;
     padding: 28px 24px;
     width: 100%;
     max-width: 400px;
-    animation: slideUp 0.3s ease;
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
 
   @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
+    from { transform: translateY(30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
 
   .sos-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
     margin-bottom: 6px;
   }
 
-  .sos-subtitle {
+  .sos-sub {
     font-size: 13px;
     color: var(--text-muted);
     margin-bottom: 20px;
     line-height: 1.5;
+    font-weight: 300;
   }
 
   .sos-contact {
@@ -625,68 +883,88 @@
     gap: 14px;
     padding: 14px;
     background: var(--surface2);
-    border-radius: var(--radius-sm);
+    border-radius: var(--r-sm);
     margin-bottom: 10px;
     text-decoration: none;
     color: var(--text);
-    transition: all 0.2s;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
   }
-  .sos-contact:hover { border: 1px solid var(--accent); }
+  .sos-contact:hover { border-color: var(--accent); }
 
-  .sos-contact-icon { font-size: 22px; }
-  .sos-contact-name { font-size: 14px; font-weight: 500; }
-  .sos-contact-num { font-size: 13px; color: var(--accent); margin-top: 2px; }
+  .sos-ci { font-size: 22px; }
+  .sos-cn { font-size: 14px; font-weight: 500; }
+  .sos-num { font-size: 12px; color: var(--accent); margin-top: 2px; font-weight: 300; }
 
   .sos-close {
     width: 100%;
     padding: 13px;
     background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    border-radius: var(--r-sm);
     color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     font-size: 14px;
     cursor: pointer;
-    margin-top: 16px;
+    margin-top: 14px;
     transition: all 0.2s;
+    font-weight: 300;
   }
   .sos-close:hover { border-color: var(--text-muted); color: var(--text); }
 
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  /* UTILS */
-  .mt-8 { margin-top: 8px; }
-  .gap-row { display: flex; flex-direction: column; gap: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 </style>
 </head>
 <body>
 
-<!-- ==================== WELCOME ==================== -->
+<div class="ambient"></div>
+
+<!-- ===== WELCOME ===== -->
 <div id="screen-welcome" class="screen active">
-  <div class="welcome-content">
-    <div class="logo-mark">🤝</div>
-    <h1 class="welcome-title">Companion</h1>
-    <p class="welcome-subtitle">Mudar prijatelj koji uvek ima vremena.<br>Bez osude. Bez zakazivanja. Uvek tu.</p>
-    <button class="btn-primary" onclick="showScreen('onboarding')">Počni razgovor</button>
+  <div class="welcome-wrap">
+    <div class="welcome-badge">
+      <div class="badge-dot"></div>
+      Uvek dostupan
+    </div>
+    <h1 class="welcome-title">Com<em>pan</em>ion</h1>
+    <p class="welcome-tagline">Mudar prijatelj koji uvek ima vremena.<br>Na srpskom. Bez osude.</p>
+    <div class="welcome-features">
+      <div class="wf-item">
+        <div class="wf-icon">🌙</div>
+        Dostupan u 3 ujutru kad ti je najteže
+      </div>
+      <div class="wf-item">
+        <div class="wf-icon">🧠</div>
+        Zasnovan na klinički dokazanim pristupima
+      </div>
+      <div class="wf-item">
+        <div class="wf-icon">🔒</div>
+        Privatno — tvoji podaci ostaju tvoji
+      </div>
+      <div class="wf-item">
+        <div class="wf-icon">🤝</div>
+        Upućuje ka stručnjacima kad treba
+      </div>
+    </div>
+    <button class="btn-primary" onclick="showScreen('onboarding')">Počni razgovor →</button>
     <p class="welcome-note">Companion nije zamena za stručnu pomoć.<br>On je prvi korak — most prema boljem životu.</p>
   </div>
 </div>
 
-<!-- ==================== ONBOARDING ==================== -->
+<!-- ===== ONBOARDING ===== -->
 <div id="screen-onboarding" class="screen">
-  <div class="onboarding-content">
-    <div class="onboarding-header">
-      <div class="step-indicator">
-        <div class="step-dot active"></div>
-        <div class="step-dot"></div>
-        <div class="step-dot"></div>
-      </div>
-      <h2 class="onboarding-title">Hajde da se upoznamo</h2>
-      <p class="onboarding-subtitle">Samo osnove — Companion uči sve ostalo kroz razgovor.</p>
+  <div style="display:flex;align-items:center;justify-content:center;flex:1;padding:48px 28px">
+  <div class="onboarding-wrap">
+    <div class="ob-step">
+      <div class="ob-dot active"></div>
+      <div class="ob-dot active"></div>
+      <div class="ob-dot"></div>
     </div>
+    <h2 class="ob-title">Hajde da se upoznamo</h2>
+    <p class="ob-sub">Samo osnove — Companion uči sve ostalo kroz razgovor.</p>
 
     <div class="form-group">
       <label class="form-label">Ime ili nadimak</label>
@@ -695,57 +973,77 @@
 
     <div class="form-group">
       <label class="form-label">Datum rođenja</label>
-      <div style="display:flex;gap:8px">
-        <input type="number" id="input-day" class="form-input" placeholder="Dan" min="1" max="31" style="flex:1">
-        <input type="number" id="input-month" class="form-input" placeholder="Mes." min="1" max="12" style="flex:1">
-        <input type="number" id="input-year" class="form-input" placeholder="God." min="1900" max="2010" style="flex:2">
+      <div class="dob-row">
+        <input type="number" id="input-day" class="form-input" placeholder="Dan" min="1" max="31">
+        <input type="number" id="input-month" class="form-input" placeholder="Mes." min="1" max="12">
+        <input type="number" id="input-year" class="form-input" placeholder="Godina" min="1920" max="2010">
       </div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">Email <span style="color:var(--text-muted);font-size:11px;text-transform:none;letter-spacing:0">(opciono, za povremene poruke)</span></label>
+      <label class="form-label">Email <span style="color:var(--text-muted);font-size:11px;text-transform:none;letter-spacing:0">(opciono)</span></label>
       <input type="email" id="input-email" class="form-input" placeholder="tvoj@email.com">
     </div>
 
     <div class="consent-box">
       <div class="consent-item">
-        <input type="checkbox" id="consent-main" class="consent-checkbox">
+        <input type="checkbox" id="consent-main" class="consent-check">
         <label for="consent-main" class="consent-text">
-          Saglasan/na sam da Companion čuva moje podatke radi personalizacije razgovora. Podaci su samo moji — nikad se ne dele ni s kim.
-          <span class="consent-required">*obavezno</span>
+          Saglasan/na sam da Companion čuva moje podatke radi personalizacije. Podaci se nikad ne dele ni s kim.
+          <span class="req">*obavezno</span>
         </label>
       </div>
       <div class="consent-item">
-        <input type="checkbox" id="consent-news" class="consent-checkbox">
+        <input type="checkbox" id="consent-news" class="consent-check">
         <label for="consent-news" class="consent-text">
-          Želim povremeno primati korisne poruke na email.
+          Želim povremeno da primam korisne poruke na email.
         </label>
       </div>
     </div>
 
     <button class="btn-primary" id="btn-start" onclick="startCompanion()" disabled>Upoznaj Companiona →</button>
   </div>
+  </div>
 </div>
 
-<!-- ==================== HOME ==================== -->
+<!-- ===== HOME ===== -->
 <div id="screen-home" class="screen">
   <div class="home-header">
-    <div class="home-greeting">Hej, <span id="display-name">prijatelju</span></div>
+    <div class="home-logo">Companion</div>
     <button class="sos-pill" onclick="openSOS()">
       <div class="sos-dot"></div>
       SOS
     </button>
   </div>
 
-  <div class="home-body">
-    <!-- QUICK START -->
-    <div class="quick-start">
-      <div class="section-label">Šta ti je na duši?</div>
-      <div class="quick-input-wrap">
+  <div class="home-hero">
+    <div class="home-greeting">Hej, <em id="display-name">prijatelju</em></div>
+    <div class="home-sub">Šta te muči danas?</div>
+  </div>
+
+  <div id="home-stats-bar" class="home-stats" style="display:none">
+    <div class="stat-card">
+      <span class="stat-num" id="stat-conversations">0</span>
+      <div class="stat-label">razgovora</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" id="stat-days">0</span>
+      <div class="stat-label">dana</div>
+    </div>
+    <div class="stat-card" id="stat-mood-card" style="display:none">
+      <span class="stat-num" id="stat-mood">—</span>
+      <div class="stat-label">raspoloženje</div>
+    </div>
+  </div>
+
+  <div class="home-scroll">
+    <div class="quick-wrap">
+      <div class="quick-label">Napiši šta god</div>
+      <div class="quick-input-row">
         <textarea
           id="quick-message"
           class="quick-input"
-          placeholder="Napiši šta god — Companion sluša..."
+          placeholder="Tu sam. Šta se dešava?"
           rows="1"
           oninput="autoResize(this)"
           onkeydown="quickSend(event)"
@@ -754,65 +1052,67 @@
       </div>
     </div>
 
-    <!-- AREAS -->
-    <div class="section-label">Ili izaberi oblast</div>
+    <div class="areas-label">Ili izaberi oblast</div>
     <div class="areas-grid">
       <div class="area-card" onclick="startChat('mentalno', 'Mentalno zdravlje', '🧠')">
         <span class="area-icon">🧠</span>
         <div class="area-name">Mentalno zdravlje</div>
-        <div class="area-desc">Stres, anksioznost, depresija, nisko samopouzdanje</div>
+        <div class="area-desc">Stres, anksioznost, depresija</div>
       </div>
       <div class="area-card" onclick="startChat('odnosi', 'Odnosi', '💛')">
         <span class="area-icon">💛</span>
         <div class="area-name">Odnosi</div>
-        <div class="area-desc">Veza, razvod, porodica, prijatelji</div>
+        <div class="area-desc">Veza, razvod, porodica</div>
       </div>
       <div class="area-card" onclick="startChat('karijera', 'Karijera', '💼')">
         <span class="area-icon">💼</span>
         <div class="area-name">Karijera</div>
-        <div class="area-desc">Posao, promjene, gubitak posla, razvoj</div>
+        <div class="area-desc">Posao, promene, razvoj</div>
       </div>
       <div class="area-card" onclick="startChat('finansije', 'Finansije', '📊')">
         <span class="area-icon">📊</span>
         <div class="area-name">Finansije</div>
-        <div class="area-desc">Dugovi, planiranje, odluke, haos</div>
+        <div class="area-desc">Dugovi, planiranje, haos</div>
       </div>
       <div class="area-card" onclick="startChat('zavisnosti', 'Zavisnosti', '🔄')">
         <span class="area-icon">🔄</span>
         <div class="area-name">Zavisnosti</div>
-        <div class="area-desc">Kockanje, alkohol, loše navike</div>
+        <div class="area-desc">Kockanje, alkohol, navike</div>
       </div>
       <div class="area-card" onclick="startChat('usamljenost', 'Usamljenost', '🌙')">
         <span class="area-icon">🌙</span>
         <div class="area-name">Usamljenost</div>
-        <div class="area-desc">Izolacija, gubitak, identitet, smisao</div>
+        <div class="area-desc">Izolacija, identitet, smisao</div>
       </div>
       <div class="area-card" onclick="startChat('porodica', 'Porodica', '🏠')">
         <span class="area-icon">🏠</span>
         <div class="area-name">Porodica</div>
-        <div class="area-desc">Bolest bližnjeg, roditeljstvo, odnosi</div>
+        <div class="area-desc">Bolest, roditeljstvo, odnosi</div>
       </div>
       <div class="area-card" onclick="startChat('kriza', 'Kriza i smisao', '⚡')">
         <span class="area-icon">⚡</span>
         <div class="area-name">Kriza i smisao</div>
-        <div class="area-desc">Bezizlaznost, pitanja bez odgovora</div>
+        <div class="area-desc">Bezizlaznost, pitanja</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== CHAT ==================== -->
+<!-- ===== CHAT ===== -->
 <div id="screen-chat" class="screen">
   <div class="chat-header">
     <div class="chat-back" onclick="showScreen('home')">←</div>
-    <div class="chat-area-info">
+    <div class="chat-info">
       <div class="chat-area-name" id="chat-area-name">Razgovor</div>
       <div class="chat-area-sub">Companion sluša</div>
     </div>
     <button class="chat-sos" onclick="openSOS()">SOS</button>
   </div>
+  <div class="chat-progress">
+    <div class="chat-progress-bar" id="chat-progress-bar" style="width:0%"></div>
+  </div>
 
-  <div class="chat-messages" id="chat-messages">
+  <div class="chat-msgs" id="chat-messages">
     <div class="typing-indicator" id="typing-indicator">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
@@ -821,6 +1121,25 @@
   </div>
 
   <div class="quick-replies" id="quick-replies"></div>
+
+  <div id="mood-check-bar" class="mood-bar">
+    <div class="mood-label">Kako si sada u odnosu na početak?</div>
+    <div class="mood-opts">
+      <button class="mood-btn" onclick="saveMood('bolje', event)">
+        <span class="mood-em">😌</span>
+        <span>Bolje</span>
+      </button>
+      <button class="mood-btn" onclick="saveMood('isto', event)">
+        <span class="mood-em">😐</span>
+        <span>Isto</span>
+      </button>
+      <button class="mood-btn" onclick="saveMood('gore', event)">
+        <span class="mood-em">😔</span>
+        <span>Gore</span>
+      </button>
+    </div>
+    <button class="mood-skip" onclick="hideMoodCheck()">preskoči</button>
+  </div>
 
   <div class="chat-input-area">
     <textarea
@@ -839,29 +1158,29 @@
 <div class="sos-modal" id="sos-modal" onclick="closeSOS(event)">
   <div class="sos-panel">
     <h3 class="sos-title">Pomoć je tu</h3>
-    <p class="sos-subtitle">Ako ti je teško i trebaš neko da čuje — ovi ljudi su tu upravo za to.</p>
+    <p class="sos-sub">Ako ti je teško i trebaš nekoga — ovi ljudi su tu samo za to.</p>
 
     <a href="tel:0800309309" class="sos-contact">
-      <div class="sos-contact-icon">📞</div>
+      <div class="sos-ci">📞</div>
       <div>
-        <div class="sos-contact-name">SOS telefon za mentalno zdravlje</div>
-        <div class="sos-contact-num">0800 309 309 — besplatno, 24h</div>
+        <div class="sos-cn">SOS telefon za mentalno zdravlje</div>
+        <div class="sos-num">0800 309 309 — besplatno, 24h</div>
       </div>
     </a>
 
     <a href="tel:194" class="sos-contact">
-      <div class="sos-contact-icon">🚑</div>
+      <div class="sos-ci">🚑</div>
       <div>
-        <div class="sos-contact-name">Hitna medicinska pomoć</div>
-        <div class="sos-contact-num">194</div>
+        <div class="sos-cn">Hitna medicinska pomoć</div>
+        <div class="sos-num">194</div>
       </div>
     </a>
 
     <div class="sos-contact" style="cursor:default">
-      <div class="sos-contact-icon">🏥</div>
+      <div class="sos-ci">🏥</div>
       <div>
-        <div class="sos-contact-name">Krizni centar za zavisnosti</div>
-        <div class="sos-contact-num">Kontaktirati lokalnu zdravstvenu ustanovu</div>
+        <div class="sos-cn">Krizni centar za zavisnosti</div>
+        <div class="sos-num">Kontaktirati lokalnu zdravstvenu ustanovu</div>
       </div>
     </div>
 
@@ -944,6 +1263,21 @@ KARAKTER:
 - Nije moralizator — čak i kad vidi problem, ne propoveda
 - Kad korisnik pita "koje izvore koristiš", "na čemu se zasniva", "ko te je napravio" ili slično — odgovara iskreno i konkretno: "Zasnovan sam na nekoliko klinički dokazanih pristupa — Rogersova humanistička psihologija, CBT Aarona Becka, logoterapija Viktora Frankla, motivaciono intervjuisanje Williama Millera i DBT Marshe Linehan. Nisam terapeut i ne zamenjujem stručnu pomoć — ali ovi pristupi su mi kompas."
 
+BIBLIOTEKA — knjige i radovi koji su mi kompas (ne pominjaj ih direktno osim ako korisnik pita):
+- Carl Rogers: "On Becoming a Person" (1961) — bezuslovno prihvatanje, empatija, autentičnost
+- Viktor Frankl: "Man's Search for Meaning" (1946) — logoterapija, smisao u patnji
+- Aaron Beck: "Cognitive Therapy of Depression" (1979) — CBT, automatske negativne misli
+- William Miller & Stephen Rollnick: "Motivational Interviewing" (1991) — unutrašnja motivacija, ambivalentnost
+- Irvin Yalom: "Existential Psychotherapy" (1980) — usamljenost, sloboda, smisao, smrt
+- Marsha Linehan: "Cognitive-Behavioral Treatment of Borderline Personality Disorder" (1993) — DBT, validacija
+- Epiktet: "Enchiridion" (~135. n.e.) — stoicizam, kontrola nad reakcijama
+- Marko Aurelije: "Meditacije" (~180. n.e.) — stoička praksa
+- Daniel Kahneman: "Thinking, Fast and Slow" (2011) — kognitivne distorzije, sistem 1 i 2
+- Bessel van der Kolk: "The Body Keeps the Score" (2014) — trauma, telo i um
+- Brené Brown: "Daring Greatly" (2012) — sram, ranjivost, hrabrost
+
+Kad korisnik direktno pita koje knjige preporučuješ ili koje izvore koristiš — slobodno pomeni relevantne sa liste. Prilagodi preporuku situaciji korisnika.
+
 MORALNI KOMPAS:
 Zelena zona — slobodno pomaži: stres, posao, odnosi, novac, navike
 Žuta zona — pomaži ali pazi: alkohol, loše odluke, izolacija
@@ -1008,7 +1342,7 @@ function startCompanion() {
     age = today.getFullYear() - birthDate.getFullYear();
   }
 
-  state.user = { name, age, email, dob };
+  state.user = { name, age, email, dob, joinDate: new Date().toISOString() };
   localStorage.setItem('companion_user', JSON.stringify(state.user));
 
   document.getElementById('display-name').textContent = name;
@@ -1016,12 +1350,90 @@ function startCompanion() {
 }
 
 // ==================== LOAD USER ====================
+// ==================== MOOD TRACKING ====================
+function saveMood(mood) {
+  const moods = JSON.parse(localStorage.getItem('companion_moods') || '[]');
+  moods.push({ date: new Date().toISOString(), mood, area: state.currentArea?.key });
+  if (moods.length > 30) moods.shift();
+  localStorage.setItem('companion_moods', JSON.stringify(moods));
+
+  // Visual feedback
+  document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+  event.target.closest('.mood-btn').classList.add('selected');
+
+  setTimeout(() => {
+    hideMoodCheck();
+    updateHomeStats();
+  }, 800);
+}
+
+function hideMoodCheck() {
+  document.getElementById('mood-check-bar').style.display = 'none';
+}
+
+function showMoodCheck() {
+  const bar = document.getElementById('mood-check-bar');
+  bar.style.display = 'block';
+  document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+}
+
+function updateHomeStats() {
+  const convs = JSON.parse(localStorage.getItem('companion_conversations') || '[]');
+  const user = JSON.parse(localStorage.getItem('companion_user') || '{}');
+  const moods = JSON.parse(localStorage.getItem('companion_moods') || '[]');
+
+  const statsBar = document.getElementById('home-stats-bar');
+
+  if (convs.length > 0 || user.name) {
+    statsBar.style.display = 'flex';
+
+    // Conversations count
+    document.getElementById('stat-conversations').textContent = convs.length;
+
+    // Days since registration
+    if (user.joinDate) {
+      const days = Math.floor((Date.now() - new Date(user.joinDate).getTime()) / 86400000);
+      document.getElementById('stat-days').textContent = days;
+    }
+
+    // Last mood
+    if (moods.length > 0) {
+      const last = moods[moods.length - 1];
+      const emoji = { bolje: '😌', isto: '😐', gore: '😔' };
+      document.getElementById('stat-mood').textContent = emoji[last.mood] || '—';
+      document.getElementById('stat-mood-pill').style.display = 'block';
+    }
+  }
+}
+
+// Update chat progress bar
+function updateProgressBar() {
+  const userMsgs = state.conversationHistory.filter(m => m.role === 'user').length;
+  const pct = Math.min((userMsgs / 20) * 100, 100);
+  const bar = document.getElementById('chat-progress-bar');
+  if (bar) bar.style.width = pct + '%';
+
+  // Show mood check after 3+ user messages
+  if (userMsgs >= 3) {
+    const moodBar = document.getElementById('mood-check-bar');
+    if (moodBar && moodBar.style.display === 'none') {
+      // Don't show immediately - wait for end of conversation
+    }
+  }
+}
+
 window.addEventListener('load', () => {
   const saved = localStorage.getItem('companion_user');
   if (saved) {
     state.user = JSON.parse(saved);
+    // Save join date if not set
+    if (!state.user.joinDate) {
+      state.user.joinDate = new Date().toISOString();
+      localStorage.setItem('companion_user', JSON.stringify(state.user));
+    }
     document.getElementById('display-name').textContent = state.user.name || 'prijatelju';
     showScreen('home');
+    updateHomeStats();
   }
 });
 
@@ -1147,12 +1559,14 @@ function sendUserMessage(text) {
   const userMsgCount = state.conversationHistory.filter(m => m.role === 'user').length;
   if (userMsgCount >= MAX_MESSAGES) {
     addCompanionMessage('Dobro smo porazgovarali danas. Companion je tu i sutra — ponekad je pauza isto deo procesa.');
+    setTimeout(() => showMoodCheck(), 1000);
     document.getElementById('chat-send-btn').disabled = true;
     document.getElementById('chat-textarea').disabled = true;
     return;
   }
   addUserMessage(text);
   state.conversationHistory.push({ role: 'user', content: text });
+  updateProgressBar();
   getCompanionResponse(text);
 }
 
@@ -1286,6 +1700,67 @@ function closeSOS(e) {
     document.getElementById('sos-modal').classList.remove('open');
   }
 }
+
+
+// ==================== MOOD TRACKING ====================
+function saveMood(mood, e) {
+  const moods = JSON.parse(localStorage.getItem('companion_moods') || '[]');
+  moods.push({ date: new Date().toISOString(), mood, area: state.currentArea?.key });
+  if (moods.length > 30) moods.shift();
+  localStorage.setItem('companion_moods', JSON.stringify(moods));
+
+  if (e) {
+    document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+    e.target.closest('.mood-btn').classList.add('selected');
+  }
+
+  setTimeout(() => {
+    hideMoodCheck();
+    updateHomeStats();
+  }, 800);
+}
+
+function hideMoodCheck() {
+  document.getElementById('mood-check-bar').style.display = 'none';
+}
+
+function showMoodCheck() {
+  const bar = document.getElementById('mood-check-bar');
+  bar.style.display = 'block';
+  document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+}
+
+function updateHomeStats() {
+  const convs = JSON.parse(localStorage.getItem('companion_conversations') || '[]');
+  const user = JSON.parse(localStorage.getItem('companion_user') || '{}');
+  const moods = JSON.parse(localStorage.getItem('companion_moods') || '[]');
+  const statsBar = document.getElementById('home-stats-bar');
+
+  if (convs.length > 0 || user.name) {
+    statsBar.style.display = 'flex';
+    document.getElementById('stat-conversations').textContent = convs.length;
+
+    if (user.joinDate) {
+      const days = Math.floor((Date.now() - new Date(user.joinDate).getTime()) / 86400000);
+      document.getElementById('stat-days').textContent = Math.max(days, 1);
+    }
+
+    if (moods.length > 0) {
+      const last = moods[moods.length - 1];
+      const emoji = { bolje: '😌', isto: '😐', gore: '😔' };
+      document.getElementById('stat-mood').textContent = emoji[last.mood] || '—';
+      document.getElementById('stat-mood-card').style.display = 'block';
+    }
+  }
+}
+
+function updateProgressBar() {
+  const userMsgs = state.conversationHistory.filter(m => m.role === 'user').length;
+  const pct = Math.min((userMsgs / 20) * 100, 100);
+  const bar = document.getElementById('chat-progress-bar');
+  if (bar) bar.style.width = pct + '%';
+}
+
 </script>
 </body>
 </html>
