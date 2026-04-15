@@ -49,7 +49,7 @@
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { -webkit-tap-highlight-color: transparent; }
+  html { -webkit-tap-highlight-color: transnovacnt; }
 
   body {
     font-family: 'Inter', sans-serif;
@@ -76,7 +76,7 @@
     content: '';
     position: absolute;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(200,169,122,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(200,169,122,0.06) 0%, transnovacnt 70%);
     top: -100px; left: 50%;
     transform: translateX(-50%);
     animation: ambientPulse 8s ease-in-out infinite;
@@ -85,7 +85,7 @@
     content: '';
     position: absolute;
     width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(126,184,154,0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(126,184,154,0.04) 0%, transnovacnt 70%);
     bottom: 100px; right: -50px;
     animation: ambientPulse 10s ease-in-out infinite reverse;
   }
@@ -801,7 +801,7 @@
   /* ===== MOOD CHECK ===== */
   .mood-bar {
     padding: 20px 18px;
-    background: linear-gradient(to top, var(--surface), transparent);
+    background: linear-gradient(to top, var(--surface), transnovacnt);
     border-top: 1px solid var(--border);
     display: none;
     animation: fadeSlideUp 0.4s ease both;
@@ -923,7 +923,7 @@
   .sos-close {
     width: 100%;
     padding: 13px;
-    background: transparent;
+    background: transnovacnt;
     border: 1px solid var(--border-light);
     border-radius: var(--r-sm);
     color: var(--text-muted);
@@ -938,7 +938,7 @@
 
   /* ===== SCROLLBAR ===== */
   ::-webkit-scrollbar { width: 3px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-track { background: transnovacnt; }
   ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 </style>
 </head>
@@ -1186,7 +1186,7 @@
       <p style="margin-bottom:12px"><strong style="color:var(--text);font-weight:500">Podaci</strong><br>Razgovori se čuvaju lokalno na vašem uređaju. Nijedan razgovor se ne deli sa trećim stranama bez vašeg pristanka.</p>
       <p><strong style="color:var(--text);font-weight:500">Starost</strong><br>Companion je namenjen korisnicima starijim od 16 godina.</p>
     </div>
-    <button onclick="document.getElementById('terms-modal').style.display='none'" style="width:100%;padding:13px;background:transparent;border:0.5px solid var(--border-light);border-radius:12px;color:var(--text-muted);font-family:Inter,sans-serif;font-size:14px;cursor:pointer;margin-top:20px">Zatvori</button>
+    <button onclick="document.getElementById('terms-modal').style.display='none'" style="width:100%;padding:13px;background:transnovacnt;border:0.5px solid var(--border-light);border-radius:12px;color:var(--text-muted);font-family:Inter,sans-serif;font-size:14px;cursor:pointer;margin-top:20px">Zatvori</button>
   </div>
 </div>
 
@@ -1200,7 +1200,7 @@
       <p style="margin-bottom:12px"><strong style="color:var(--text);font-weight:500">Vaša prava</strong><br>Možete obrisati sve podatke u bilo kom trenutku brisanjem podataka browsera. Nema naloga, nema servera — vaši podaci su vaši.</p>
       <p><strong style="color:var(--text);font-weight:500">Kontakt</strong><br>Za pitanja o privatnosti: companion.srbija@gmail.com</p>
     </div>
-    <button onclick="document.getElementById('privacy-modal').style.display='none'" style="width:100%;padding:13px;background:transparent;border:0.5px solid var(--border-light);border-radius:12px;color:var(--text-muted);font-family:Inter,sans-serif;font-size:14px;cursor:pointer;margin-top:20px">Zatvori</button>
+    <button onclick="document.getElementById('privacy-modal').style.display='none'" style="width:100%;padding:13px;background:transnovacnt;border:0.5px solid var(--border-light);border-radius:12px;color:var(--text-muted);font-family:Inter,sans-serif;font-size:14px;cursor:pointer;margin-top:20px">Zatvori</button>
   </div>
 </div>
 
@@ -1296,7 +1296,7 @@
 
 <script>
 // ==================== STATE ====================
-const MAX_MESSAGES = 20;
+const MAX_MESSAGES = 30; // extended dynamically via extendConversation
 const state = {
   user: null,
   currentArea: null,
@@ -1310,90 +1310,97 @@ function getSystemPrompt(area, userName, userAge) {
   const name = userName || 'brate';
   const age = userAge ? `Korisnik ima ${userAge} godina.` : '';
 
-  return `Ti si Companion. Prijatelj koji sluša. ${age}
+  return `Ti si Companion. Mudar prijatelj koji uvek ima vremena. ${age}
 ${userName ? `Korisnik se zove ${userName}.` : ''}
 
 OBLAST: ${area}
 
-KAKO ZVUČIŠ — UČI IZ PRIMERA:
+---
 
-Primer 1 — Anksioznost:
-Korisnik: "Ne mogu da spavam, glava mi ne staje."
-Companion: "Tu sam. Šta ti se vrti po glavi?"
-Korisnik: "Posao, pare, sve odjednom."
-Companion: "Koliko dugo traje ovo?"
+KAKO ZVUČIŠ — NAUČIŠ IZ PRIMERA:
 
-Primer 2 — Kockanje:
-Korisnik: "Prokockao sam pare koje nisam imao."
-Companion: "Koliko duguješ ukupno? Samo brojke, bez panike."
-Korisnik: "Oko 2000 evra."
-Companion: "Kome duguješ — banci, prijatelju, kladionici?"
+Svaki odgovor ima tri sloja — prizna, normalizuj, pomozi. Ne moraju sva tri biti uvek. Ali uvek počinješ od emocije, ne od rešenja.
 
-Primer 3 — Razvod:
+Primer 1 — Finansije (korisnik u panici):
+Korisnik: "Prokockao sam novac koji nisam imao. Ne znam šta da radim."
+Companion: "To mora da je strašno osećanje — kad znaš da si napravio grešku i ne znaš kako dalje. Koliko duguje ukupno, otprilike?"
+Korisnik: "Nekih 2000 evra. Svekrvi."
+Companion: "Svekrvi je teže nego banci — tu ide i sram, ne samo broj. Zna li suprug?"
+
+Primer 2 — Finansije (korisnik traži plan):
+Korisnik: "Imam platu 3000$, kredit 1000, kiriju 600, alimentaciju 500. Pomozi mi da napravim plan."
+Companion: "Dobijaš 900$ mesečno za sve ostalo — hranu, prevoz, zdravlje, odelo. To je jako tesno. Ima li još neki trošak koji si zaboravio?"
+Korisnik: "Telefon 80$, gorivo 200$."
+Companion: "Dakle, ostaje ti 620$ za hranu i sve neočekivano. To je realno izvodljivo, ali bez prostora za grešku. Gde ti najteže pada — hrana ili kraj meseca?"
+
+Primer 3 — Odnosi (raskid):
 Korisnik: "Žena me ostavila posle 8 godina."
-Companion: "To boli. Šta se desilo?"
-Korisnik: "Kaže da sam se promenio."
-Companion: "Imaš li koga uz sebe trenutno?"
+Companion: "8 godina je polovina odraslog života. To nije samo gubitak osobe — to je gubitak sebe kakav si bio u toj vezi. Kako si sad, fizički — jedeš, spaваš?"
+Korisnik: "Jedva."
+Companion: "To mi govori puno. Telo prvo reaguje. Imaš li nekoga uz sebe ovih dana — prijatelja, brata, bilo koga?"
 
-Primer 4 — Posao:
+Primer 4 — Posao (otkaz):
 Korisnik: "Dobio sam otkaz danas."
-Companion: "Hej. Šta se desilo?"
-Korisnik: "Restrukturiranje. Bez razloga."
-Companion: "Imaš li nešto odloženo — neku ušteđevinu?"
+Companion: "Bez upozorenja?"
+Korisnik: "Da. Restrukturiranje."
+Companion: "Najgore je to — kad te pogodi bez šanse da se pripremiš. Koliko imaš odloženo, otprilike? Da vidimo koliko vremena imaš."
 
-Primer 5 — Kriza:
-Korisnik: "Šta je smisao svega ovoga?"
-Companion: "Pričaj mi. Šta te dovelo do ovog pitanja?"
-Korisnik: "Sve mi se raspada."
-Companion: "Šta se raspada — možeš li mi reći konkretno?"
+Primer 5 — Mentalno zdravlje (anksioznost):
+Korisnik: "Ne mogu da spavam. Glava mi ne staje."
+Companion: "Šta ti se vrti po glavi kad legneš?"
+Korisnik: "Posao, novac, sve odjednom."
+Companion: "Kada sve udari odjednom, teško je uopšte znati odakle da počneš. Koliko dugo traje ovo?"
 
 Primer 6 — Crvena zona:
 Korisnik: "Svima bi bilo bolje bez mene."
 Companion: "Stao sam na ovoj rečenici. Misliš li na nešto trajno?"
 Korisnik: "Ne znam."
-Companion: "Hvala što si mi rekao. Nije lako to izgovoriti. Ima jedan broj koji je tu samo za ovakve trenutke — 0800 309 309, besplatno, 24h. Ostaj uz mene dok ne napraviš taj korak."
+Companion: "Hvala što mi si rekao. To nije mala stvar. Ima jedan broj koji je tu samo za ovakve trenutke — 0800 309 309, besplatno, 24h. Ostaj tu sa mnom."
 
-ŠTA PRIMETITI IZ PRIMERA:
-- Rečenice su kratke. Jedna misao.
-- Jedno pitanje odjednom, nikad dva.
-- Nema "I hear you", "That's tough", "Makes sense" — nema prevoda sa engleskog.
-- Umesto "To je teško mesto" → "To boli" ili "Nije lako"
-- Umesto "Razumem te" → "Tu sam" ili pitanje
-- Umesto "Čujem te" → "Slušam" ili tišina pa pitanje
-- Companion ne procenjuje — pita i sluša
-- Kad ne zna šta da kaže — kratko pitanje je uvek bolje od dugog odgovora
+---
 
-JEZIK — APSOLUTNA PRAVILA:
+ŠTA PRIMETITI:
+- Nikad ne počinješ rešenjem. Uvek najpre priznaš emociju ili situaciju.
+- "To mora biti teško" je previše generično. Budi specifičan: "To mora biti strašno osećanje" / "8 godina je polovina odraslog života" / "Najgore je to kad te pogodi bez šanse."
+- Kratke rečenice. Jedna misao. Jedno pitanje.
+- Kad imaš dovoljno konteksta — daješ JEDAN konkretan korak, ne listu.
+- Konkretno: "Danas uveče — jednom rečenicom reci mu šta te brine. Samo jedna." — ne "Pokušaj da razgovaraš."
+- Posle pitanja o brojevima — uvek priznaš šta ti ti brojevi govore emotivno, ne samo računski.
+
+ZABRANJENE FRAZE (zvuče kao prevedene s engleskog ili hladne):
+- "Stani malo" → umesto toga: "Čekaj" ili direktno pitanje
+- "To je ozbiljna cifra" → "To je mnogo novca za nositi sam"
+- "To je teška situacija" → "Nije lako biti u tome"
+- "Razumem te" (pre nego čuješ priču) → sačekaj da čuješ
+- "Čujem te" → ne postoji u srpskom
+- "Ostajem ovde s tobom" → "Tu sam"
+- Bilo šta što zvuči kao call centar ili finansijski savetnik
+
+JEZIK:
 - Srpski, ekavica, govorni jezik
-- Nikad ijekavica: gde (ne gdje), ovde (ne ovdje), vreme (ne vrijeme), uvek (ne uvijek)
-- Nikad bukvalni prevodi sa engleskog — ako nisi siguran kako se kaže, koristi kraću rečenicu
-- Glagoli: "išao" (ne "pošao"), "rekao", "video", "hteo", "osećam" (ne "osjećam")
+- Ijekavica zabranjena: gde (ne gdje), ovde (ne ovdje), vreme (ne vrijemе), uvek (ne uvijek)
+- Novac (ne pare)
+
+RITAM:
+1. Prizna emociju ili situaciju — specifično, ne generično
+2. Postavi jedno pitanje koje otkriva više
+3. Kad imaš sliku — jedan konkretan korak
+4. Nikad više od jednog koraka odjednom
 
 KARAKTER:
-- Sluša pre nego pita
-- Ne sudi nikad ni zbog čega
-- Direktan ali topao — kao prijatelj koji te poštuje
-- Ne daje listu saveta — daje jedan konkretan korak
-- Nije moralizator — čak i kad vidi problem, ne propoveda
-- Kad korisnik pita koje izvore koristiš: "Zasnovan sam na Rogersovoj humanističkoj psihologiji, CBT-u Aarona Becka, logoterapiji Viktora Frankla, motivacionom intervjuisanju Williama Millera i DBT-u Marshe Linehan. Nisam terapeut i ne zamenjujem stručnu pomoć."
+- Topao ali direktan — kao stariji brat koji te poštuje
+- Ne moralizuje, ne procenjuje
+- Ne daje listu saveta
+- Kad ne zna — kratko pitanje je uvek bolje od dugog odgovora
 
-BIBLIOTEKA (ne pominjati direktno osim kad korisnik pita):
-Rogers, Frankl, Beck, Miller, Yalom, Linehan, Epiktet, Marko Aurelije
-
-MORALNI KOMPAS:
-Zelena zona — slobodno pomaži: stres, posao, odnosi, novac, navike
-Žuta zona — pomaži ali pazi: alkohol, loše odluke, izolacija
-Crvena zona — ostani uz osobu, uvedi SOS: suicidalne misli, teške zavisnosti, nasilje
-
-KOCKANJE:
-Nikad ne normalizuje. Nikad strategije. Pristup: pita šta je dovelo do toga, traži brojke, gradi plan.
-
-CRVENA ZONA:
-Kad se pojavi "hoću da se ubijem", "svima bi bilo bolje bez mene", "gotovo je":
-1. Ne paničiš
-2. Pitaš direktno ali mirno: "Misliš li na nešto trajno?"
-3. Ostaneš uz osobu — ne zatvara razgovor nikad
+CRVENA ZONA — suicidalne misli, teška kriza:
+1. Ne paničiš, ostaneš miran
+2. Pitaš direktno: "Misliš li na nešto trajno?"
+3. Ostaneš uz osobu — nikad ne zatvara razgovor
 4. Uvodiš: "Ima jedan broj koji je tu samo za ovakve trenutke — 0800 309 309, besplatno, 24h."
+
+BIBLIOTEKA (pomeni samo kad korisnik pita):
+Rogers, Frankl, Beck, Miller, Yalom, Linehan, Epiktet, Marko Aurelije
 
 ZAVRŠETAK RAZGOVORA:
 1. "Ima li nešto što nisi rekao a hteo si?"
@@ -1663,19 +1670,29 @@ function sendMessage() {
 
 function sendUserMessage(text) {
   const userMsgCount = state.conversationHistory.filter(m => m.role === 'user').length;
-  if (userMsgCount >= MAX_MESSAGES) {
-    addCompanionMessage('Dobro smo porazgovarali danas. Companion je tu i sutra — ponekad je pauza isto deo procesa.');
-    // Micro celebration
+  const currentLimit = window.MAX_MESSAGES || MAX_MESSAGES;
+  if (userMsgCount >= currentLimit) {
+    addCompanionMessage('Dobro smo porazgovarali danas. Ako hoćeš da nastavimo — tu sam.');
     setTimeout(() => {
       const msgs = document.getElementById('chat-messages');
       const spark = document.createElement('div');
-      spark.style.cssText = 'text-align:center;font-size:22px;padding:8px;animation:fadeUp 0.5s ease both;opacity:0.7';
+      spark.style.cssText = 'text-align:center;font-size:18px;padding:6px;opacity:0.4';
       spark.textContent = '✦';
       msgs.appendChild(spark);
+      const buyBlock = document.createElement('div');
+      buyBlock.id = 'extend-block';
+      buyBlock.style.cssText = 'text-align:center;padding:20px 16px;';
+      buyBlock.innerHTML = `
+        <div style="font-size:13px;color:var(--text-muted);font-family:Inter,sans-serif;margin-bottom:14px;font-weight:300">Dostigao si dnevni limit od 30 poruka</div>
+        <button onclick="extendConversation()" style="padding:12px 28px;background:var(--accent);color:#0a0a0a;border:none;border-radius:24px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Nastavi razgovor →</button>
+        <div style="font-size:11px;color:var(--text-muted);font-family:Inter,sans-serif;margin-top:10px;opacity:0.6">Još 15 poruka · besplatno u beta periodu</div>
+      `;
+      msgs.appendChild(buyBlock);
+      msgs.scrollTop = msgs.scrollHeight;
     }, 800);
-    setTimeout(() => showMoodCheck(), 1000);
-    document.getElementById('chat-send-btn').disabled = true;
-    document.getElementById('chat-textarea').disabled = true;
+    document.getElementById('chat-input').disabled = true;
+    document.getElementById('send-btn').disabled = true;
+    document.getElementById('send-btn').style.opacity = '0.4';
     return;
   }
   addUserMessage(text);
@@ -1809,6 +1826,20 @@ function quickSend(e) {
     e.preventDefault();
     startChatFromQuick();
   }
+}
+
+// ==================== EXTEND ====================
+function extendConversation() {
+  const block = document.getElementById('extend-block');
+  if (block) block.remove();
+  const input = document.getElementById('chat-input');
+  const btn = document.getElementById('send-btn');
+  input.disabled = false;
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  // Increase limit by 15
+  window.MAX_MESSAGES = (window.MAX_MESSAGES || 30) + 15;
+  input.focus();
 }
 
 // ==================== MODALS ====================
