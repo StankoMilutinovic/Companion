@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Companionu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #111111;
+    --border: #1f1f1f;
+    --border-light: #2a2a2a;
+    --text: #f0ece4;
+    --text-muted: #555;
+    --text-soft: #888;
+    --accent: #c8a97a;
+    --accent2: #7eb89a;
+    --accent-glow: rgba(200,169,122,0.1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,169,122,0.05) 0%, transparent 70%);
+    top: -150px; left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 28px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-bottom: 48px;
+    transition: color 0.2s;
+    font-weight: 300;
+  }
+  .back-btn:hover { color: var(--accent); }
+
+  .page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .page-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .page-intro {
+    font-size: 16px;
+    color: var(--text-soft);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 56px;
+    max-width: 560px;
+  }
+
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* APPROACHES */
+  .approach-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .approach-item {
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 6px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+  .approach-item:hover { border-color: var(--border-light); }
+
+  .approach-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .approach-name {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .approach-zone {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .zone-always { background: rgba(126,184,154,0.15); color: var(--accent2); }
+  .zone-crisis { background: rgba(200,169,122,0.15); color: var(--accent); }
+  .zone-addiction { background: rgba(126,184,154,0.1); color: var(--accent2); }
+  .zone-emotion { background: rgba(217,112,112,0.1); color: #d97070; }
+  .zone-existential { background: rgba(200,169,122,0.1); color: var(--accent); }
+
+  .approach-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .approach-quote {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-left: 2px solid var(--accent);
+    font-size: 13px;
+    color: var(--text-soft);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* LITERATURE */
+  .lit-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+  .lit-item:hover { border-color: var(--border-light); }
+
+  .lit-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--accent);
+    min-width: 28px;
+    line-height: 1;
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .lit-content { flex: 1; }
+
+  .lit-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    font-style: italic;
+  }
+
+  .lit-author {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 300;
+  }
+
+  .lit-desc {
+    font-size: 12px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .disclaimer p {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .disclaimer strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .cta-wrap {
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 32px;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,169,122,0.3); }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+
+<div class="container">
+  <a href="/" class="back-btn">← Nazad na Companion</a>
+
+  <div class="page-badge">O projektu</div>
+  <h1 class="page-title">Na čemu se<br><em>zasniva</em> Companion</h1>
+  <p class="page-intro">
+    Companion nije chatbot ni terapeutski servis. On je mudar prijatelj — ali prijatelj čiji su instinkti izgrađeni na decenijama psiholoških istraživanja i klinički dokazanih pristupa.
+  </p>
+
+  <!-- PRISTUPI -->
+  <div class="section">
+    <div class="section-label">Terapijski pristupi</div>
+    <div class="approach-grid">
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Humanistička psihologija — Carl Rogers</div>
+          <span class="approach-zone zone-always">Uvek prisutno</span>
+        </div>
+        <div class="approach-desc">
+          Temelj svakog razgovora. Rogers je dokazao da empатija, bezuslovno prihvatanje i autentičnost nisu samo lepe reči — one su neophodni i dovoljni uslovi za terapijsku promenu.
+        </div>
+        <div class="approach-quote">
+          "Kada me neko sluša bez osude i bez pokušaja da me promeni — tada mogu da rastem."
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Logoterapija — Viktor Frankl</div>
+          <span class="approach-zone zone-crisis">Kriza smisla</span>
+        </div>
+        <div class="approach-desc">
+          Kad neko kaže "nema smisla više ništa" — Frankl nas uči da ne pitamo zašto te boli, nego za šta još živiš. Empirijski dokazan pristup čak i kod pacijenata sa terminalnim dijagnozama.
+        </div>
+        <div class="approach-quote">
+          "Čovek može pretrpeti skoro svako kako ako ima zašto."
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Kognitivno-bihejvioralna terapija — Aaron Beck</div>
+          <span class="approach-zone zone-always">Svakodnevno</span>
+        </div>
+        <div class="approach-desc">
+          Prva talk terapija dokazana jednako efikasnom kao medikamenti za depresiju. Više od 2.000 studija potvrdilo je efikasnost. CBT pomaže u prepoznavanju i menjanju automatskih negativnih misli.
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Motivaciono intervjuisanje — William Miller</div>
+          <span class="approach-zone zone-addiction">Zavisnosti</span>
+        </div>
+        <div class="approach-desc">
+          Companion ne menja korisnika. Pomaže mu da pronađe i oslobodi motivaciju koja već postoji unutar njega. Ne suočavaš osobu sa problemom — vodiš je da sama vidi nesklad između onoga što radi i onoga što želi.
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Egzistencijalna terapija — Irvin Yalom</div>
+          <span class="approach-zone zone-existential">Identitet i smisao</span>
+        </div>
+        <div class="approach-desc">
+          Za usamljenost, gubitak identiteta, sredovečnu krizu. Yalom za razliku od Frankla ne traži smisao — prihvata da neke stvari nemaju smisla i uči osobu da živi autentično uprkos tome.
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Dijalektička bihejvioralna terapija — Marsha Linehan</div>
+          <span class="approach-zone zone-emotion">Intenzivne emocije</span>
+        </div>
+        <div class="approach-desc">
+          Pre nego što ponudiš bilo šta — priznaš da je bol realan. Validacija nije slaganje — to je prepoznavanje da emocija ima smisla u kontekstu u kom se javlja.
+        </div>
+      </div>
+
+      <div class="approach-item">
+        <div class="approach-header">
+          <div class="approach-name">Stoicizam — Epiktet, Marko Aurelije, Seneka</div>
+          <span class="approach-zone zone-always">Filozofska osnova</span>
+        </div>
+        <div class="approach-desc">
+          Pradeda svega navedenog. CBT je u suštini repakovana stoička mudrost iz pre 2.000 godina. Ključni princip koji proima sve: ne možemo kontrolisati šta nam se dešava — možemo kontrolisati kako reagujemo.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LITERATURA -->
+  <div class="section">
+    <div class="section-label">Referentna literatura</div>
+    <div class="lit-grid">
+
+      <div class="lit-item">
+        <div class="lit-num">1</div>
+        <div class="lit-content">
+          <div class="lit-title">On Becoming a Person</div>
+          <div class="lit-author">Carl R. Rogers, 1961</div>
+          <div class="lit-desc">Temelj humanističke psihologije. Definisao je terapijski odnos kao osnovu svake promene.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">2</div>
+        <div class="lit-content">
+          <div class="lit-title">Man's Search for Meaning</div>
+          <div class="lit-author">Viktor E. Frankl, 1946</div>
+          <div class="lit-desc">Nastala u Aušvicu. Utemeljila logoterapiju — terapiju smislom. Jedna od najuticajnijih psiholoških knjiga 20. veka.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">3</div>
+        <div class="lit-content">
+          <div class="lit-title">Cognitive Therapy of Depression</div>
+          <div class="lit-author">Aaron T. Beck, 1979</div>
+          <div class="lit-desc">Utemeljila CBT. Više od 2.000 studija potvrdilo je efikasnost pristupa koji je Beck opisao.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">4</div>
+        <div class="lit-content">
+          <div class="lit-title">Motivational Interviewing</div>
+          <div class="lit-author">William R. Miller & Stephen Rollnick, 1991</div>
+          <div class="lit-desc">Empirijski dokazan pristup za rad sa zavisnostima i ambivalentnošću prema promeni.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">5</div>
+        <div class="lit-content">
+          <div class="lit-title">Existential Psychotherapy</div>
+          <div class="lit-author">Irvin D. Yalom, 1980</div>
+          <div class="lit-desc">Četiri egzistencijalne teme: smrt, sloboda, usamljenost, besmislenost. Kompas za najdublja pitanja.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">6</div>
+        <div class="lit-content">
+          <div class="lit-title">DBT Skills Training Manual</div>
+          <div class="lit-author">Marsha M. Linehan, 1993</div>
+          <div class="lit-desc">Dijalektička bihejvioralna terapija — balans između prihvatanja i promene, sa fokusom na validaciju.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">7</div>
+        <div class="lit-content">
+          <div class="lit-title">The Body Keeps the Score</div>
+          <div class="lit-author">Bessel van der Kolk, 2014</div>
+          <div class="lit-desc">Kako trauma utiče na mozak i telo — i zašto razgovor sam po sebi ponekad nije dovoljan.</div>
+        </div>
+      </div>
+
+      <div class="lit-item">
+        <div class="lit-num">8</div>
+        <div class="lit-content">
+          <div class="lit-title">Meditacije</div>
+          <div class="lit-author">Marko Aurelije, ~180. n.e.</div>
+          <div class="lit-desc">Stoička filozofska praksa. Inspiracija za CBT i modernu psihologiju otpornosti.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="section">
+    <div class="section-label">Važna napomena</div>
+    <div class="disclaimer">
+      <p>
+        <strong>Companion nije terapeutski servis i ne zamenjuje stručnu psihološku ili medicinsku pomoć.</strong>
+        On je dizajniran kao prvi korak — most koji pomaže ljudima da razmisle, pronađu perspektivu i prepoznaju kada im je potrebna stručna podrška.
+        <br><br>
+        Ako se nalazite u krizi ili vam je potrebna hitna pomoć, molimo vas da pozovete
+        <strong>SOS telefon za mentalno zdravlje: 0800 309 309</strong> (besplatno, 24h) ili
+        <strong>Hitnu medicinsku pomoć: 194</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a href="/" class="cta-btn">Počni razgovor →</a>
+  </div>
+
+</div>
+</body>
+</html>
