@@ -339,10 +339,17 @@
   }
 
   .home-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-text {
     font-family: 'Playfair Display', serif;
-    font-size: 20px;
+    font-size: 22px;
     font-style: italic;
     color: var(--accent);
+    letter-spacing: -0.3px;
   }
 
   .sos-pill {
@@ -929,7 +936,17 @@
       <div class="badge-dot"></div>
       Uvek dostupan
     </div>
-    <h1 class="welcome-title">Com<em>pan</em>ion</h1>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+      <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="15" stroke="#c8a97a" stroke-width="1.5"/>
+        <path d="M10 16c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#c8a97a" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="16" cy="20" r="2.5" fill="#c8a97a"/>
+        <path d="M16 17.5v-1.5" stroke="#080808" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="11" cy="16" r="1" fill="#c8a97a" opacity="0.5"/>
+        <circle cx="21" cy="16" r="1" fill="#c8a97a" opacity="0.5"/>
+      </svg>
+      <h1 class="welcome-title" style="margin-bottom:0">Com<em>pan</em>ion</h1>
+    </div>
     <p class="welcome-tagline">Mudar prijatelj koji uvek ima vremena.<br>Na srpskom. Bez osude.</p>
     <div class="welcome-features">
       <div class="wf-item">
@@ -1009,7 +1026,17 @@
 <!-- ===== HOME ===== -->
 <div id="screen-home" class="screen">
   <div class="home-header">
-    <div class="home-logo">Companion</div>
+    <div class="home-logo" style="display:flex;align-items:center;gap:10px">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="15" stroke="#c8a97a" stroke-width="1.5"/>
+        <path d="M10 16c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#c8a97a" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="16" cy="20" r="2.5" fill="#c8a97a"/>
+        <path d="M16 17.5v-1.5" stroke="#080808" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="11" cy="16" r="1" fill="#c8a97a" opacity="0.5"/>
+        <circle cx="21" cy="16" r="1" fill="#c8a97a" opacity="0.5"/>
+      </svg>
+      <span style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--accent);letter-spacing:-0.3px">Companion</span>
+    </div>
     <div style="display:flex;gap:8px;align-items:center">
       <a href="/about.html" style="display:flex;align-items:center;padding:7px 13px;background:var(--surface);border:1px solid var(--border-light);border-radius:20px;font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:0.5px;font-weight:500;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.color='var(--text-muted)'">O nama</a>
       <button class="sos-pill" onclick="openSOS()">
@@ -1060,42 +1087,42 @@
       <div class="area-card" onclick="startChat('mentalno', 'Mentalno zdravlje', '🧠')">
         <span class="area-icon">🧠</span>
         <div class="area-name">Mentalno zdravlje</div>
-        <div class="area-desc">Stres, anksioznost, depresija</div>
+        <div class="area-desc">Emocionalna ravnoteža i unutrašnji mir</div>
       </div>
       <div class="area-card" onclick="startChat('odnosi', 'Odnosi', '💛')">
         <span class="area-icon">💛</span>
         <div class="area-name">Odnosi</div>
-        <div class="area-desc">Veza, razvod, porodica</div>
+        <div class="area-desc">Ljubav, bliskost i međuljudske veze</div>
       </div>
       <div class="area-card" onclick="startChat('karijera', 'Karijera', '💼')">
         <span class="area-icon">💼</span>
         <div class="area-name">Karijera</div>
-        <div class="area-desc">Posao, promene, razvoj</div>
+        <div class="area-desc">Karijerni put i profesionalni razvoj</div>
       </div>
       <div class="area-card" onclick="startChat('finansije', 'Finansije', '📊')">
         <span class="area-icon">📊</span>
         <div class="area-name">Finansije</div>
-        <div class="area-desc">Dugovi, planiranje, haos</div>
+        <div class="area-desc">Finansijska stabilnost i planiranje</div>
       </div>
       <div class="area-card" onclick="startChat('zavisnosti', 'Zavisnosti', '🔄')">
         <span class="area-icon">🔄</span>
         <div class="area-name">Zavisnosti</div>
-        <div class="area-desc">Kockanje, alkohol, navike</div>
+        <div class="area-desc">Promena navika i lični rast</div>
       </div>
       <div class="area-card" onclick="startChat('usamljenost', 'Usamljenost', '🌙')">
         <span class="area-icon">🌙</span>
         <div class="area-name">Usamljenost</div>
-        <div class="area-desc">Izolacija, identitet, smisao</div>
+        <div class="area-desc">Povezanost, identitet i životni smisao</div>
       </div>
       <div class="area-card" onclick="startChat('porodica', 'Porodica', '🏠')">
         <span class="area-icon">🏠</span>
         <div class="area-name">Porodica</div>
-        <div class="area-desc">Bolest, roditeljstvo, odnosi</div>
+        <div class="area-desc">Porodične veze i briga za bližnje</div>
       </div>
       <div class="area-card" onclick="startChat('kriza', 'Kriza i smisao', '⚡')">
         <span class="area-icon">⚡</span>
         <div class="area-name">Kriza i smisao</div>
-        <div class="area-desc">Bezizlaznost, pitanja</div>
+        <div class="area-desc">Životni smisao i lični preokret</div>
       </div>
     </div>
   </div>
@@ -1460,13 +1487,13 @@ function startChat(areaKey, areaName, areaIcon) {
   // Opening message from Companion
   const openings = {
     mentalno: "Tu sam. Šta se dešava?",
-    odnosi: "Tu sam. Šta se dešava?",
-    karijera: "Tu sam. Šta te muči?",
-    finansije: "Tu sam. Ispričaj mi — šta se dešava sa parama?",
-    zavisnosti: "Tu sam. Možeš mi reći sve, bez osude. Šta se dešava?",
+    odnosi: "Tu sam. Da li je u pitanju neko blizak ili nešto što te muči u nekoj vezi?",
+    karijera: "Tu sam. Šta se dešava na profesionalnom planu?",
+    finansije: "Tu sam. Šta te brine u finansijskom smislu?",
+    zavisnosti: "Tu sam. Sve što mi kažeš ostaje između nas. Šta se dešava?",
     usamljenost: "Tu sam. Pričaj mi.",
-    porodica: "Tu sam. Šta se dešava?",
-    kriza: "Tu sam. Šta ti je?"
+    porodica: "Tu sam. Da li je u pitanju neko od tvojih bližnjih?",
+    kriza: "Tu sam. Šta te muči u ovom trenutku?"
   };
 
   const opening = openings[areaKey] || "Tu sam. Šta ti je na duši?";
