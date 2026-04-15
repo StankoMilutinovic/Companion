@@ -582,6 +582,7 @@
   #screen-chat {
     height: 100vh;
     height: 100dvh;
+    background: var(--bg);
   }
 
   .chat-header {
@@ -590,7 +591,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(8,8,8,0.95);
+    background: var(--bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     position: sticky;
@@ -651,6 +652,7 @@
     flex-direction: column;
     gap: 14px;
     scroll-behavior: smooth;
+    background: var(--bg);
   }
 
   .msg { max-width: 88%; animation: msgIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
@@ -749,7 +751,7 @@
   .chat-input-area {
     padding: 10px 16px 20px;
     border-top: 1px solid var(--border);
-    background: rgba(8,8,8,0.98);
+    background: var(--bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     display: flex;
@@ -1732,30 +1734,29 @@ async function getCompanionResponse(userMessage) {
 }
 
 async function generateQuickReplies(lastCompanionMsg, history) {
-  if (!lastCompanionMsg || !history || history.length < 3) return [];
-
+  if (!lastCompanionMsg || !history || history.length < 2) return [];
   try {
     const recentHistory = history.slice(-6);
-    const contextStr = recentHistory.map(m => `${m.role === 'user' ? 'Korisnik' : 'Companion'}: ${m.content}`).join('\n');
-
+    const ctx = recentHistory.map(m => (m.role === 'user' ? 'Korisnik' : 'Companion') + ': ' + m.content).join('\n');
+    const prompt = 'Kontekst:\n' + ctx + '\n\nPoslednja poruka Companiona: "' + lastCompanionMsg + '"\n\nVrati JSON array sa 3 kratka odgovora na srpskom (ekavica). Svaki odgovor max 6 reci, gramaticki potpun. Samo array, bez objasnjenja.';
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: "Ti generises kratke konkretne odgovore koje korisnik moze da klikne. Vrati SAMO JSON array sa 3 opcije na srpskom (ekavica). Svaki odgovor gramaticki potpuna fraza max 6 reci. Nikad nedovrsene recenice. Primer: ['Pre nekoliko godina', 'Nikad nismo bili bliski', 'Tesko mi je']. Samo JSON array.",       messages: [{ role: 'user', content: `Kontekst razgovora:\n${contextStr}\n\nPoslednja Companion poruka: "${lastCompanionMsg}"\n\nGeneriši 3 konkretna, relevantna odgovora.` }]
+        system: 'Ti generises quick reply opcije. Uvek vratis SAMO validan JSON array sa 3 string elementa. Nikakav drugi tekst.',
+        messages: [{ role: 'user', content: prompt }]
       })
     });
-
     const raw = await response.text();
     let data;
-    try { data = JSON.parse(raw); } catch(e) { data = {}; }
-    const text = data.content && data.content[0] ? data.content[0].text : '[]';
+    try { data = JSON.parse(raw); } catch(e) { return []; }
+    const text = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : '';
     const clean = text.replace(/```json|```/g, '').trim();
-    const match = clean.match(/\[.*\]/s);
-    if (match) {
-      const arr = JSON.parse(match[0]);
-      if (Array.isArray(arr) && arr.length > 0) return arr.slice(0, 3);
-    }
+    const start = clean.indexOf('[');
+    const end2 = clean.lastIndexOf(']');
+    if (start === -1 || end2 === -1) return [];
+    const arr = JSON.parse(clean.substring(start, end2 + 1));
+    if (Array.isArray(arr) && arr.length > 0) return arr.slice(0, 3).filter(s => typeof s === 'string' && s.length > 0);
   } catch(e) {}
   return [];
 }
