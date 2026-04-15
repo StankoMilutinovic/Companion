@@ -1480,7 +1480,18 @@ function startChat(areaKey, areaName, areaIcon) {
   };
 
   const opening = openings[areaKey] || "Tu sam. Šta ti je na duši?";
-  const staticReplies = ['Da, upravo to', 'Ima više od toga', 'Nešto drugo'];
+  const openingReplies = {
+    mentalno: ['Previše toga mi se vrti po glavi', 'Osećam se iscrpljeno', 'Imam napade anksioznosti', 'Nešto drugo'],
+    odnosi: ['Svađam se sa partnerom', 'Udaljen/a sam od porodice', 'Osećam se usamljeno', 'Nešto drugo'],
+    karijera: ['Nezadovoljan/na sam poslom', 'Razmišljam o promeni', 'Izgubio/la sam posao', 'Nešto drugo'],
+    finansije: ['Ne mogu da platim račune', 'Imam dugove', 'Ne znam kako da upravljam novcem', 'Nešto drugo'],
+    zavisnosti: ['Imam problem sa kockanjem', 'Pijem više nego što bih trebao/la', 'Teško mi je da promenim naviku', 'Nešto drugo'],
+    usamljenost: ['Nemam kome da se obratim', 'Osećam se izolovano', 'Izgubio/la sam kontakt sa bliskim osobama', 'Nešto drugo'],
+    porodica: ['Brine me zdravlje bliskog', 'Imam problema sa roditeljima', 'Teško mi je kao roditelju', 'Nešto drugo'],
+    kriza: ['Nemam motivaciju ni za šta', 'Pitam se čemu sve ovo', 'Osećam se zaglavljen/a', 'Nešto drugo'],
+    general: ['Nešto me muči', 'Imam problem koji ne znam kako da rešim', 'Samo mi treba neko da sluša', 'Nešto drugo']
+  };
+  const staticReplies = openingReplies[areaKey] || openingReplies.general;
   setTimeout(() => addCompanionMessage(opening, staticReplies), 600);
 }
 
